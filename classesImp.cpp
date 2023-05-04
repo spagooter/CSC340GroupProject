@@ -6,4 +6,7 @@
 #define GROUP_PROJECT_CLASSESIMP_H
 #include "classes.h"
 
+linkedList::print(){
+  cout << "print" << endl;
+}
 #endif //GROUP_PROJECT_CLASSESIMP_H

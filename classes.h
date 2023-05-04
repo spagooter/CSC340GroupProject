@@ -4,7 +4,6 @@
 
 #ifndef GROUP_PROJECT_CLASSES_H
 #define GROUP_PROJECT_CLASSES_H
-#include "classesImp.h"
 
 template <typename T>
 class Node{
@@ -23,7 +22,7 @@ private:
     Node<T>* last;
 public:
     void addNode(T val);
-
+    void print();
 };
 
 #endif //GROUP_PROJECT_CLASSES_H

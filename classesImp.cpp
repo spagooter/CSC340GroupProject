@@ -1,12 +1,22 @@
 //
 // Created by donny on 5/3/23.
 //
-
-#ifndef GROUP_PROJECT_CLASSESIMP_H
-#define GROUP_PROJECT_CLASSESIMP_H
+#ifndef CLASSES_IMP_CPP
+#define CLASSES_IMP_CPP
 #include "classes.h"
+#include <iostream>
 
-linkedList::print(){
+
+using namespace std;
+
+template <typename T>
+linkedList<T>::linkedList(){
+  this->first = nullptr;
+  this->last = nullptr;
+}
+
+template <typename T>
+void linkedList<T>::print(){
   cout << "print" << endl;
 }
-#endif //GROUP_PROJECT_CLASSESIMP_H
+#endif

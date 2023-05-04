@@ -21,6 +21,7 @@ private:
     Node<T>* first;
     Node<T>* last;
 public:
+    linkedList();
     void addNode(T val);
     void print();
 };

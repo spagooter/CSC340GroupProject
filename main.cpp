@@ -1,5 +1,6 @@
-#include <iostream>
+
 #include "classes.h"
+#include <iostream>
 using namespace std;
 int main() {
   linkedList<int> list;

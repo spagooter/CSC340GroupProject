@@ -176,4 +176,55 @@ Node<T>* Node<T>::getNextNode() {
   return this->next;
 }
 
+//** Bus class **
+class Bus {
+public:
+    string location;
+    int getBusID();
+    int getBusPax();
+    int setBusID(int num);
+    int setBusPax(int num);
+    void loadPax(){}
+    void downloadPax(){}
+private:
+    int id = -1;
+    int capacity = 25;
+    int passengers = -1;
+
+};//end Bus class
+
+int Bus::setBusID(int num) {
+    this->id = num;
+}
+
+int Bus::setBusPax(int num) {
+    this->passengers = num;
+}
+
+int Bus:: getBusID(){
+    return this->id;
+}
+
+int Bus:: getBusPax(){
+    return this->passengers;
+}
+
+class Person {
+public:
+    string startLoc;
+    bool requireSeat;
+    void requestStop();
+    string getDestination();
+
+private:
+    string destination;
+    int age;    //not sure if needed
+
+
+};//end Person class
+
+string Person::getDestination() {
+    return this->destination;
+}
+
 #endif //GROUP_PROJECT_CLASSES_H

@@ -1,7 +1,3 @@
-//
-// Created by donny on 5/3/23.
-//
-
 #ifndef GROUP_PROJECT_CLASSES_H
 #define GROUP_PROJECT_CLASSES_H
 
@@ -9,7 +5,9 @@
 
 using namespace std;
 
+/////////////////
 /* node class */
+///////////////
 template<typename T>
 class Node {
 private:
@@ -31,7 +29,9 @@ public:
     void setVal(T data);
 };
 
+////////////////////////
 /* Linked List class */
+//////////////////////
 template<typename T>
 class linkedList {
 private:
@@ -39,16 +39,18 @@ private:
     Node<T>* last;
 public:
     linkedList();
-    void add(T data);
-    void add(Node<T>* temp);
+    void addNode(T data);
+    void addNode(Node<T>* temp);
     void print();
     Node<T>* begin();
     Node<T>* end();
 };
 
+///////////////////////////////////
 /* linked list member functions */
+/////////////////////////////////
 template <typename T>
-void linkedList<T>::add(Node<T>* temp) {
+void linkedList<T>::addNode(Node<T>* temp) {
     if (this->first == nullptr) {
         this->first = temp;
         this->last = temp;
@@ -61,9 +63,9 @@ void linkedList<T>::add(Node<T>* temp) {
 }
 
 template <typename T>
-void linkedList<T>::add(T data) {
-    Node<T>* temp = new Node<T>(data);
-    this->add(temp);
+void linkedList<T>::addNode(T data) {
+    auto temp = new Node<T>(data);
+    this->addNode(temp);
 }
 
 template <typename T>
@@ -91,7 +93,9 @@ Node<T>* linkedList<T>::end() {
     return this->end;
 }
 
+////////////////////////////
 /* node member functions */
+//////////////////////////
 template <typename T>
 void Node<T>::setVal(T data) {
     this->val = data;
@@ -155,5 +159,7 @@ template<typename T>
 Node<T>* Node<T>::getNextNode() {
     return this->next;
 }
+
+
 
 #endif //GROUP_PROJECT_CLASSES_H

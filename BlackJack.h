@@ -77,7 +77,7 @@ public:
     void print() {
       Node<Card> *iter = Cards->begin();
       while (iter != nullptr) {
-        cout << iter->getVal().symbol << " of " << iter->getVal().suit << " ";
+        cout << iter->getVal().symbol << " of " << iter->getVal().suit << " " << endl;
         iter = iter->getNextNode();
       }
       cout << Cards->size();  //display the size

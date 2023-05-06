@@ -1,7 +1,3 @@
-//
-// Created by donny on 5/3/23.
-//
-
 #ifndef GROUP_PROJECT_CLASSES_H
 #define GROUP_PROJECT_CLASSES_H
 
@@ -9,7 +5,9 @@
 
 using namespace std;
 
+/////////////////
 /* node class */
+///////////////
 template<typename T>
 class Node {
 private:
@@ -31,24 +29,36 @@ public:
     void setVal(T data);
 };
 
+////////////////////////
 /* Linked List class */
+//////////////////////
 template<typename T>
 class linkedList {
 private:
     Node<T>* first;
     Node<T>* last;
+    int length;
 public:
     linkedList();
-    void add(T data);
-    void add(Node<T>* temp);
+    void addNode(T data);
+    void addNode(Node<T>* temp);
     void print();
     Node<T>* begin();
     Node<T>* end();
+    int size();
 };
 
+///////////////////////////////////
 /* linked list member functions */
+/////////////////////////////////
 template <typename T>
-void linkedList<T>::add(Node<T>* temp) {
+int linkedList<T>::size(){
+  return this->length;
+}
+
+//template to add nodes
+template <typename T>
+void linkedList<T>::addNode(Node<T>* temp) {
     if (this->first == nullptr) {
         this->first = temp;
         this->last = temp;
@@ -58,20 +68,25 @@ void linkedList<T>::add(Node<T>* temp) {
         this->last->setNextNode(temp);
         this->last = temp;
     }
+    ++this->length;
 }
 
+//template to add nodes from data
 template <typename T>
-void linkedList<T>::add(T data) {
-    Node<T>* temp = new Node<T>(data);
-    this->add(temp);
+void linkedList<T>::addNode(T data) {
+    auto temp = new Node<T>(data);
+    this->addNode(temp);
 }
 
+//default constructor
 template <typename T>
 linkedList<T>::linkedList() {
     this->first = nullptr;
     this->last = nullptr;
+    this->length = 0;
 }
 
+//this function prints the list
 template <typename T>
 void linkedList<T>::print() {
     Node<T>* iter = this->first;
@@ -81,27 +96,34 @@ void linkedList<T>::print() {
     }
 }
 
+//returns the beginning of the list
 template <typename T>
 Node<T>* linkedList<T>::begin() {
     return this->first;
 }
 
+//returns the end of the list
 template <typename T>
 Node<T>* linkedList<T>::end() {
-    return this->end;
+    return this->last;
 }
 
+////////////////////////////
 /* node member functions */
+//////////////////////////
+//sets the current node value
 template <typename T>
 void Node<T>::setVal(T data) {
     this->val = data;
 }
 
+//returns the current node value
 template <typename T>
 T Node<T>::getVal() {
     return this->val;
 }
 
+//default node template constructor
 template <typename T>
 Node<T>::Node() {
     this->val = NULL;
@@ -109,6 +131,7 @@ Node<T>::Node() {
     this->next = nullptr;
 }
 
+//node template constructor with data
 template <typename T>
 Node<T>::Node(T data) {
     this->val = data;
@@ -116,95 +139,53 @@ Node<T>::Node(T data) {
     this->next = nullptr;
 }
 
+//sets the value of the previous node
 template<typename T>
 void Node<T>::setPrevVal(T data) {
     this->prev->val = data;
 }
 
+//sets the value of the next node
 template<typename T>
 void Node<T>::setNextVal(T data) {
     this->next->val = data;
 }
 
+//sets the previous node
 template<typename T>
 void Node<T>::setPrevNode(Node* temp) {
     this->prev = temp;
 }
 
+//sets the next node
 template<typename T>
 void Node<T>::setNextNode(Node* temp) {
     this->next = temp;
 }
 
+//returns the previous value
 template<typename T>
 T Node<T>::getPrevVal() {
     return this->prev->val;
 }
-
+ //returns the next value
 template<typename T>
 T Node<T>::getNextVal() {
     return this->next->val;
 }
 
+//returns the previous node
 template<typename T>
 Node<T>* Node<T>::getPrevNode() {
     return this->prev;
 }
 
+//returns the next node
 template<typename T>
 Node<T>* Node<T>::getNextNode() {
     return this->next;
 }
 
-//** Bus class **
-class Bus {
-public:
-    string location;
-    int getBusID();
-    int getBusPax();
-    int setBusID(int num);
-    int setBusPax(int num);
-    void loadPax(){}
-    void downloadPax(){}
-private:
-    int id = -1;
-    int capacity = 25;
-    int passengers = -1;
 
-};//end Bus class
-
-int Bus::setBusID(int num) {
-    this->id = num;
-}
-
-int Bus::setBusPax(int num) {
-    this->passengers = num;
-}
-
-int Bus:: getBusID(){
-    return this->id;
-}
-
-int Bus:: getBusPax(){
-    return this->passengers;
-}
-
-class Person {
-public:
-    string startLoc;
-    bool requireSeat;
-    void requestStop();
-    string getDestination();
-
-private:
-    string destination;
-    int age;    //not sure if needed
-
-
-};//end Person class
-
-string Person::getDestination() {
-    return this->destination;
-}
 
 #endif //GROUP_PROJECT_CLASSES_H

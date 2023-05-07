@@ -11,9 +11,9 @@
 class Player{
 private:
     string playerName;
-    int numOfCards;
+    int numCards;
     int cardsValue;
-    int numOfPlayers;
+    int numPlayers;
     int cashRemaining;
     //hand
     linkedList<Player> Players;
@@ -22,25 +22,39 @@ public:
 
     Player(){
         playerName = "";
-        numOfCards = 0;
+        numCards = 0;
         cardsValue = 0;
-        numOfPlayers = 0;
+        numPlayers = 0;
     }
+
+    string getPlayerName(){return this->playerName;}
+    int getNumCards(){return this->numCards;}
+    int getCardsValue(){return this->cardsValue;}
+    int getPlayerNum(){return this->numPlayers;}
+    int getCashRemaining(){return this->cashRemaining;}
+
+    void setPlayerName(string name){this->playerName = name;}
+    void setNumCards(int num){this->numCards = num;}
+    void setCardsValue(int num){this->cardsValue = this->cardsValue + num;}
+    void setNumPlayers(int num){this->numPlayers = num;}
 
     void hit();
     void stand();
 
-    void getPlayerNum(){
-        int numPlayers;
+    void startingPlayerNum(){
+        int num;
         cout << "Enter number of players: (max 5)" << endl;
-        cin >> numPlayers;
-        numOfPlayers = numPlayers;
-        //add player names?
-
+        cin >> num;
+        setNumPlayers(num);
+        cout << "Number of players: " << getPlayerNum() << endl;
+        addPlayer();
     }
+
     void addPlayer(){
+        Players = *new linkedList<Player>();
         Player* person = new Player;
-        for(int i = 1; i <= numOfPlayers; i++){
+        for(int i = 1; i <= numPlayers; i++){
+
             cout << "Enter player" << i << "'s name:" << endl;
             getline(cin, person->playerName);
 
@@ -48,17 +62,20 @@ public:
             cin >> person->cashRemaining;
 
             Players.addNode(*person);
+        }//end for loop
+    }// end addPlayer
 
+    void printPlayer(){
+        Node<Player>* curr;
+        curr = Players.begin();
+        for(int i = 0; i < numPlayers; i++) {
+            cout << "Player: " << curr->getPlayerName() << endl;
+            curr = curr->getNextNode();
         }
-
     }
 
 
-};
-
-
-
-
+}; //end Player class
 
 
 #endif //CSC340GROUPPROJECT_PLAYER_H

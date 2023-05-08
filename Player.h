@@ -19,6 +19,7 @@ private:
     //hand
     linkedList<Player> Players;
 
+
 public:
     Player(){
         playerName = "";
@@ -86,7 +87,6 @@ public:
         cout <<  "\nDealer: Hello my name is Bob. Welcome to my table.\n\nWhat are your names? \n" << endl;
         //cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
         Players.addNode(*person);
-
     }
 
     //***************************** add player to linked list **************************
@@ -115,16 +115,16 @@ public:
 
     //******************************* print players *******************************
     void printPlayer(){
+
         Node<Player>* curr;
         curr = Players.begin();
         for(int i = 0; i < numPlayers; i++) {
-            cout << "Player name: " << curr->getVal().getPlayerName() << endl;
-            cout << "Player bet: " << curr->getVal().getCashRemaining() << endl;
+            cout << "Player Name: " << curr->getVal().getPlayerName()<< endl;
+            cout << "Player Bet:  " << curr->getVal().getCashRemaining() << endl;
             curr = curr->getNextNode();
         }
+        cout << "Dealer: Buy in complete. Dealing cards. Good Luck." << endl;
     }//end printPlayer()
-
-
 }; //end Player class
 
 

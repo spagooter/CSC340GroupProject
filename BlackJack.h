@@ -33,7 +33,7 @@ public:
         value = num;
       } else if (num == 1) {
         symbol = "A";
-        value = 11;
+        value = 11;             //value can be 11 or 1
       } else if (num == 11) {
         symbol = "J";
         value = 10;

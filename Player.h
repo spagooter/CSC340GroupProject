@@ -5,8 +5,9 @@
 #ifndef CSC340GROUPPROJECT_PLAYER_H
 #define CSC340GROUPPROJECT_PLAYER_H
 
+#include <iostream>
+#include <string>
 #include "classes.h"
-
 
 class Player{
 private:
@@ -19,7 +20,6 @@ private:
     linkedList<Player> Players;
 
 public:
-
     Player(){
         playerName = "";
         numCards = 0;
@@ -33,13 +33,28 @@ public:
     int getPlayerNum(){return this->numPlayers;}
     int getCashRemaining(){return this->cashRemaining;}
 
+    void setPlayerName(){
+        cout << "Enter player's name: " << endl;
+        string str;
+        getline(cin, str);
+        cout << "str: " << str << endl;
+        //cout << "input name: " << str << endl;
+        //this->playerName = str;
+    }
     void setPlayerName(string name){this->playerName = name;}
     void setNumCards(int num){this->numCards = num;}
     void setCardsValue(int num){this->cardsValue = this->cardsValue + num;}
     void setNumPlayers(int num){this->numPlayers = num;}
+    void setCashRemaining(int num){this->cashRemaining = num;}
+    void setCashRemaining(){
+        cout << "Buy in amount: " << endl;
+        int bet;
+        cin >> bet;
+        this->cashRemaining = bet;
+    }
 
-    void hit();
-    void stand();
+    //void hit();
+    //void stand();
 
     void startingPlayerNum(){
         int num;
@@ -54,12 +69,16 @@ public:
         Players = *new linkedList<Player>();
         Player* person = new Player;
         for(int i = 1; i <= numPlayers; i++){
+            cout << "for loop: " << i << endl;
+            //cout << "Enter player" << i << "'s name:" << endl;
+            //string name;
+            //getline(cin, name);
+            person->setPlayerName();
 
-            cout << "Enter player" << i << "'s name:" << endl;
-            getline(cin, person->playerName);
-
-            cout << "Buy in amount: " << endl;
-            cin >> person->cashRemaining;
+            //cout << "Buy in amount: " << endl;
+            //int bet;
+            //cin >> bet;
+            person->setCashRemaining();
 
             Players.addNode(*person);
         }//end for loop
@@ -69,7 +88,8 @@ public:
         Node<Player>* curr;
         curr = Players.begin();
         for(int i = 0; i < numPlayers; i++) {
-            cout << "Player: " << curr->getPlayerName() << endl;
+            cout << "Player name: " << curr->getVal().getPlayerName() << endl;
+            cout << "Player bet: " << curr->getVal().getCashRemaining() << endl;
             curr = curr->getNextNode();
         }
     }

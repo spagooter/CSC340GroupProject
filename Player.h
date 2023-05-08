@@ -36,10 +36,10 @@ public:
     void setPlayerName(){
         cout << "Enter player's name: " << endl;
         string str;
-        getline(cin, str);
+        cin >> str;
         cout << "str: " << str << endl;
         //cout << "input name: " << str << endl;
-        //this->playerName = str;
+        this->playerName = str;
     }
     void setPlayerName(string name){this->playerName = name;}
     void setNumCards(int num){this->numCards = num;}

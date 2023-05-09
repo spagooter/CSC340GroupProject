@@ -5,27 +5,27 @@
 #ifndef CSC340GROUPPROJECT_PLAYER_H
 #define CSC340GROUPPROJECT_PLAYER_H
 
-#include <iostream>
-#include <string>
 #include "classes.h"
 
-class Player{
+class Person{
+    friend class Player;
 private:
     string playerName;
     int numCards;
     int cardsValue;
     int numPlayers;
     int cashRemaining;
-    //hand
-    linkedList<Player> Players;
 
-
+    linkedList<Card> *Hand;             //linked list of cards
 public:
-    Player(){
+
+
+    Person(){
         playerName = "";
         numCards = 0;
         cardsValue = 0;
         numPlayers = 0;
+        Hand = nullptr;
     }
     //************************** getters *********************************
     string getPlayerName(){return this->playerName;}
@@ -52,7 +52,6 @@ public:
         cin >> bet;
         this->cashRemaining = bet;
     }
-
     //****************************** add money (win) ***************************************
     void addMoney(int num){
         int addCash = this->getCashRemaining() + num;
@@ -75,23 +74,34 @@ public:
         cin >> num;
         setNumPlayers(num);
         cout << "Number of players: " << getPlayerNum() << endl;
-        addDealer();
-        addPlayer();
+        //addDealer();
+        //addPlayer();
+    }
+
+
+class Player{
+private:
+    linkedList<Person> *PlayerList;             //linked list of cards
+
+public:
+    Player() {
+    PlayerList = nullptr;
     }
 
     //***************************** add dealer to linked list**************************
     void addDealer(){
+        PlayerList = new linkedList<Person>();
         Player* person = new Player;
-        person->setPlayerName("Dealer");
-        person->setCashRemaining(10000000);     //ten million dollars
+        //person->setPlayerName("Dealer");
+        //person->setCashRemaining(10000000);     //ten million dollars
         cout <<  "\nDealer: Hello my name is Bob. Welcome to my table.\n\nWhat are your names? \n" << endl;
         //cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
-        Players.addNode(*person);
+        PlayerList->addNode(*person);
     }
 
     //***************************** add player to linked list **************************
     void addPlayer(){
-        Players = *new linkedList<Player>();
+        PlayerList = *new linkedList<Player>();
         Player* person = new Player;
 
         for(int i = 1; i <= numPlayers; i++){
@@ -117,7 +127,7 @@ public:
     void printPlayer(){
 
         Node<Player>* curr;
-        curr = Players.begin();
+        curr = PlayerList.begin();
         for(int i = 0; i < numPlayers; i++) {
             cout << "Player Name: " << curr->getVal().getPlayerName()<< endl;
             cout << "Player Bet:  " << curr->getVal().getCashRemaining() << endl;
@@ -125,7 +135,8 @@ public:
         }
         cout << "Dealer: Buy in complete. Dealing cards. Good Luck." << endl;
     }//end printPlayer()
-}; //end Player class
+};
+    //end Player class
 
 
 #endif //CSC340GROUPPROJECT_PLAYER_H

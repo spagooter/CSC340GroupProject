@@ -5,7 +5,7 @@
 #ifndef CSC340GROUPPROJECT_PLAYER_H
 #define CSC340GROUPPROJECT_PLAYER_H
 
-#include "classes.h"
+#include "LinkedList.h"
 
 class Person {
     friend class Player;

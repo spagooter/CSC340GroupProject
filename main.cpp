@@ -5,7 +5,7 @@
 
 using namespace std;
 
- void startGame(){
+ /*void startGame(){
      bool endGame = false;
      int num;
      cout << "Welcome to our BlackJack table." << endl;
@@ -52,11 +52,11 @@ using namespace std;
      int num = rand() % 52 + 1;
      return num;
 
- }
+ }*/
 
 int main() {
-    //cout << getRandomNum() << endl;
-     startGame();
+  //cout << getRandomNum() << endl;
+  // startGame();
   //Deck *deckPtr = new Deck("standard");
   //deckPtr->print();
 
@@ -64,5 +64,20 @@ int main() {
   //Player* player1 = new Player;
   //player1->startingPlayerNum();
   //player1->printPlayer();
+  //Deck deck("standard");
+  //deck.shuffle();
+  auto list1 = new linkedList<int>();
+  auto list2 = new linkedList<int>();
+
+  list1->addNode(1);
+  list1->addNode(2);
+  list1->addNode(3);
+  *list2 = *list1;
+  delete list1;
+  list2->addNode(4);
+  cout << "list2:" << endl;
+  list2->print();
+
+
   return 0;
 }

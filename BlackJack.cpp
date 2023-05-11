@@ -33,9 +33,21 @@ Card::Card(std::string suit, int num) {
   }
 }
 
+bool Card::operator==(Card& rhs){
+  return (this->symbol == rhs.symbol && this->suit == rhs.suit);
+}
+
+
 ///////////////////////////
 /* Deck Class Functions */
 /////////////////////////
+void Deck::shuffle() {
+  int newDeckSize = this->Cards->size();
+  int randIndex;
+  Deck* newDeck = new Deck();
+
+}
+
 Deck::Deck() {
   Cards = nullptr;
 }

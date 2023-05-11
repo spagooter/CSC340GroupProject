@@ -5,11 +5,15 @@
 
 using namespace std;
 
+template <typename T>
+class linkedList;
+
 /////////////////
 /* node class */
 ///////////////
 template<typename T>
 class Node {
+    friend class linkedList<T>;
 private:
     T val;
     Node* prev;
@@ -40,20 +44,76 @@ private:
     int length;
 public:
     linkedList();
+    //~linkedList();
     void addNode(T data);
     void addNode(Node<T>* temp);
     void print();
-    Node<T>* begin();
-    Node<T>* end();
-    int size();
+    void remove(T data);
+    int size() { return this->length; }
+    Node<T> *begin();
+    Node<T> *end();
+    Node<T> *find(T data);
+    linkedList& operator=(const linkedList &rhs);
+
 };
 
 ///////////////////////////////////
 /* linked list member functions */
 /////////////////////////////////
+
+//assignment operator overload
 template <typename T>
-int linkedList<T>::size(){
-  return this->length;
+linkedList<T>& linkedList<T>::operator=(const linkedList<T> &rhs){
+  auto iter = rhs.first;
+  while (iter != nullptr){
+    this->addNode(iter);
+    iter = iter->next;
+  }
+  return *this;
+}
+
+//fundtion to remove a node containing specific data
+template <typename T>
+void linkedList<T>::remove(T data) {
+  Node<T>* iter = this->find(data);
+  if (iter == nullptr) {
+    cout << "not found" << endl;
+    return;
+  }
+  if (iter == this->first) {
+    Node<T>* temp = this->first;
+    this->first = this->first->next;
+    this->first->prev = nullptr;
+    delete temp;
+  }
+  else if (iter == this->last) {
+    Node<T>* temp = this->last;
+    this->last = this->last->prev;
+    this->last->next = nullptr;
+    delete temp;
+  }
+  else {
+    Node<T>* temp = iter;
+    iter->prev->next = iter->next;
+    iter->next->prev = iter->prev;
+    delete temp;
+  }
+  --this->length;
+}
+
+//function to find a node with specific data
+template <typename T>
+Node<T>* linkedList<T>::find(T data) {
+  bool found = false;
+  auto iter = this->first;
+  while (iter != nullptr) {
+    if (iter->val == data) {
+      found = true;
+      break;
+    }
+    iter = iter->next;
+  }
+  return found ? iter : nullptr;
 }
 
 //template to add nodes

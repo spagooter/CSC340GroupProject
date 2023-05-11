@@ -71,7 +71,7 @@ public:
 /* Game Class */
 ///////////////
 class Game{
-private:
+protected:
     linkedList<Player> *PlayerList;             //linked list of cards
 
 public:
@@ -85,7 +85,7 @@ public:
 /////////////////
 /* Dealer Class */
 ///////////////
-class Dealer{
+class Dealer: Game{
 private:
     void addMoney(string name, int num);
 

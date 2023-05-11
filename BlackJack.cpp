@@ -169,22 +169,20 @@ void Game::printPlayer(){
 /////////////////////////
 void Dealer::addMoney(string name, int num) {
     Node<Player>* curr;
-    curr = PlayerList->begin()->getNextNode();      //bypass dealer
+    curr = PlayerList->begin();      //bypass dealer
     for(int i = 0; i < PlayerList->size(); i++) {
-        if(curr->data = name){
-            curr->
-
+        if(curr->getVal().getPlayerName() == name){
+            curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()+num);
         }
         curr = curr->getNextNode();
     }
 }
-void subMoney(string name, int num) {
+void Dealer::subMoney(string name, int num) {
     Node<Player>* curr;
-    curr = PlayerList->begin()->getNextNode();      //bypass dealer
+    curr = PlayerList->begin();      //bypass dealer
     for(int i = 0; i < PlayerList->size(); i++) {
-        if(curr->data = name){
-            curr->
-
+        if(curr->getVal().getPlayerName() == name){
+            curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()-num);
         }
         curr = curr->getNextNode();
     }

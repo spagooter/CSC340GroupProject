@@ -35,4 +35,66 @@ public:
     void shuffle();
 };
 
+/////////////////
+/* Player Class */
+///////////////
+class Player {
+private:
+    string playerName;      //player name
+    int numCards;           //number of cards in hand
+    int cardsValue;         //total value of cards in hand
+    int cashRemaining;      //amount of money the player has
+
+    linkedList<Card> *Hand;             //linked list of cards
+public:
+
+    Player();
+    //************************** getters *********************************
+    string getPlayerName();
+    int getNumCards();
+    int getCardsValue();
+    int getCashRemaining();
+
+    //************************** setters *********************************
+    void setPlayerName(int i);
+    void setPlayerName(string name);
+    void setNumCards(int num);
+    void setCardsValue(int num);
+    void setCashRemaining(int num);
+    void setCashRemaining();
+
+    //void hit();
+    //void stand();
+};
+
+/////////////////
+/* Game Class */
+///////////////
+class Game{
+private:
+    linkedList<Player> *PlayerList;             //linked list of cards
+
+public:
+    Game();                                     //default constructor
+    void startingPlayerNum();                   //gets number of players
+    void addDealer();
+    void addPlayer();
+    void printPlayer();
+};//end Player class
+
+/////////////////
+/* Dealer Class */
+///////////////
+class Dealer{
+private:
+    void addMoney(string name, int num);
+
+    void subMoney(string name, int num);
+public:
+
+};
+
+
+
+
 #endif //CSC340GROUPPROJECT_BLACKJACK_H

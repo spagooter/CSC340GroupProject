@@ -6,11 +6,13 @@
 //////////////////////////
 #include "BlackJack.h"
 Card::Card() {
+  //card class has suit, symbol, and value
   suit = " ";
   symbol = " ";
   value = 0;
 }
 
+//this card constructor takes a suit and a num, other values are inferred
 Card::Card(std::string suit, int num) {
   this->suit = suit;
   if (num <= 10 && num >= 2) {
@@ -33,28 +35,46 @@ Card::Card(std::string suit, int num) {
   }
 }
 
+//operator overload for equivalence operator
 bool Card::operator==(Card& rhs){
   return (this->symbol == rhs.symbol && this->suit == rhs.suit);
 }
 
-
 ///////////////////////////
 /* Deck Class Functions */
 /////////////////////////
-void Deck::shuffle() {
+//this function adds a single card (for cheating)
+void Deck::addCard(Card card) {
+  this->Cards->addNode(card);
+}
+
+//this function shuffles the deck
+/*void Deck::shuffle() {
   int newDeckSize = this->Cards->size();
   int randIndex;
   Deck* newDeck = new Deck();
+  auto iter = this->Cards->begin();
+  for (int i = 0; i < newDeckSize; ++i) {
+    randIndex = rand() % this->Cards->size() + 1;
+    for (int j = 0; j < randIndex; ++j) {
+      iter = iter->getNextNode();
+    }
+    newDeck->Cards->addNode(iter->getVal());
+    this->Cards->removeNode(iter);
+  }
+  *(this->Cards) = *(newDeck->Cards);
+  delete newDeck;
+}*/
 
-}
-
+//default deck constructor
 Deck::Deck() {
-  Cards = nullptr;
+  Cards = new linkedList<Card>();
 }
 
+//deck constructor that takes a string, any string, and constructs a standard deck;
 Deck::Deck(string standard) {
-  Cards = new linkedList<Card>();
-  string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};
+  Cards = new linkedList<Card>();                                               //declare linked list of cards
+  string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
   Card *card;
   for (string suit: suits) {          //for each suit
     for (int i = 1; i <= 13; i++) {   //for each number
@@ -64,6 +84,7 @@ Deck::Deck(string standard) {
   }
 }
 
+//this function prints the deck
 void Deck::print() {
   Node<Card> *iter = Cards->begin();
   while (iter != nullptr) {

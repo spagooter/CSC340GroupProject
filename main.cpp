@@ -1,5 +1,4 @@
 #include "BlackJack.h"
-#include "Player.h"
 #include <string>
 #include <iostream>
 
@@ -66,18 +65,19 @@ int main() {
   //player1->printPlayer();
   //Deck deck("standard");
   //deck.shuffle();
+  //Deck deck1("standard");
+  //deck1.shuffle();
+  //deck1.print();
+  cout << "hello world" << endl;
   auto list1 = new linkedList<int>();
   auto list2 = new linkedList<int>();
-
   list1->addNode(1);
   list1->addNode(2);
   list1->addNode(3);
-  *list2 = *list1;
-  delete list1;
-  list2->addNode(4);
-  cout << "list2:" << endl;
+  cout << "list1" << endl;
+  list1->print();
+  list2 = list1;
+  cout << "list2" << endl;
   list2->print();
-
-
   return 0;
 }

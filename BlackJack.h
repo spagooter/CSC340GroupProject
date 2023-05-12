@@ -6,6 +6,9 @@
 #define CSC340GROUPPROJECT_BLACKJACK_H
 
 #include "LinkedList.h"
+
+
+
 /////////////////
 /* Card Class */
 ///////////////
@@ -27,12 +30,13 @@ public:
 ///////////////
 class Deck {
 private:
-    linkedList<Card> *Cards;  //deck has a linked list of cards
+    linkedList<Card> *Cards = nullptr;  //deck has a linked list of cards
 public:
     Deck();                   //default constructor
     Deck(string standard);    //this constructor takes a string and initializes a standard deck.
     void print();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
+    void addCard(Card card);
 };
 
 /////////////////
@@ -45,7 +49,7 @@ private:
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
 
-    linkedList<Card> *Hand;             //linked list of cards
+    linkedList<Card> *Hand; //linked list of cards
 public:
 
     Player();
@@ -88,7 +92,6 @@ public:
 class Dealer: Game{
 private:
     void addMoney(string name, int num);
-
     void subMoney(string name, int num);
 public:
 

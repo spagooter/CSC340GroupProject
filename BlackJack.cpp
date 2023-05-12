@@ -134,7 +134,9 @@ Game::Game(){
     PlayerList = nullptr;
 }
 
-void Game::loadPlayers() {
+void Game::loadGame() {
+    Deck *deckPtr = new Deck("standard");
+    //deckPtr->print();
     PlayerList = new linkedList<Player>();
     int num;
     cout << "Welcome to our BlackJack table." << endl;
@@ -150,8 +152,8 @@ void Game::addDealer(){
     Player *person = new Player;
     person->setPlayerName("Dealer");
     person->setCashRemaining(10000000);     //ten million dollars
-    cout <<  "\nDealer: Hello my name is Bob. Welcome to my table.\n\nWhat are your names? \n" << endl;
-    cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
+    cout <<  "\nDealer: Hello my name is Bob. Welcome to my table.\n\nWhat are your names?" << endl;
+    //cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
     PlayerList->addNode(*person);
 }
 
@@ -174,18 +176,51 @@ void Game::addPlayer(){
             }
         }//end while
     }//end for loop
+    printPlayer();
 }// end addPlayer
 
 void Game::printPlayer(){
     Node<Player>* curr;
     curr = PlayerList->begin()->getNextNode();      //bypass dealer
+    cout << "***************************************************" << endl;
     for(int i = 0; i < PlayerList->size()-1; i++) {
-        cout << "Player Name: " << curr->getVal().getPlayerName()<< endl;
-        cout << "Player Bet:  " << curr->getVal().getCashRemaining() << endl;
+        cout << "Player Name: " << curr->getVal().getPlayerName();
+        cout << " Bet:  " << curr->getVal().getCashRemaining() << endl;
         curr = curr->getNextNode();
     }
     cout << "Dealer: Buy in complete. Good Luck." << endl;
+
+    cout << "***************************************************\n" << endl;
+
 }//end printPlayer()
+
+void Game::optionsMenu() {
+    bool endGame = false;
+    int num;
+    do{
+        cout << "Please choose an option from the game menu: " << endl;
+        cout << "Option 0: End the Game" << endl;
+        cout << "Option 1: Deal the cards" << endl;
+        cout << "Option 2: Hit" << endl;
+        cout << "Option 3: Stay" << endl;
+        cin >> num;
+        switch(num){
+            case 0:
+                cout << "End game. Thank you for playing." << endl;
+                endGame = true;
+                break;
+            case 1:
+                cout << "Dealing cards..." << endl;      //Deal cards
+                break;
+            case 2:
+                cout << "Hit" << endl;      //hit
+                break;
+            case 3:
+                cout << "Stay" << endl;      //stay
+                break;
+        }
+    }while(endGame != true);
+}
 
 //void Game::setNumPlayers(int num) {
 //    this->numPlayers = num;

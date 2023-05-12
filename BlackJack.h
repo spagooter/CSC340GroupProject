@@ -77,13 +77,14 @@ public:
 class Game{
 protected:
     linkedList<Player> *PlayerList;             //linked list of cards
-    int numPlayers;
+    int numPlayers;                             //needed for forloop to add players while LL size is 0.
 public:
     Game();                                     //default constructor
-    void loadPlayers();                   //gets number of players
+    void loadGame();
     void addDealer();
     void addPlayer();
     void printPlayer();
+    void optionsMenu();
 //    void setNumPlayers(int num);
 };//end Player class
 

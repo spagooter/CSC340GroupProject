@@ -77,13 +77,14 @@ public:
 class Game{
 protected:
     linkedList<Player> *PlayerList;             //linked list of cards
-
+    int numPlayers;
 public:
     Game();                                     //default constructor
-    void startingPlayerNum();                   //gets number of players
+    void loadPlayers();                   //gets number of players
     void addDealer();
     void addPlayer();
     void printPlayer();
+//    void setNumPlayers(int num);
 };//end Player class
 
 /////////////////

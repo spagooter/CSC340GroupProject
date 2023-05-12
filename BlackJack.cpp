@@ -134,12 +134,14 @@ Game::Game(){
     PlayerList = nullptr;
 }
 
-void Game::startingPlayerNum() {
+void Game::loadPlayers() {
     PlayerList = new linkedList<Player>();
     int num;
+    cout << "Welcome to our BlackJack table." << endl;
     cout << endl << "Enter number of players: (max 5)" << endl;
     cin >> num;
-    cout << "Number of players: " << PlayerList->size() << endl;
+    numPlayers = num;
+    cout << "Number of players: " << numPlayers << endl;
     addDealer();
     addPlayer();
 }
@@ -149,13 +151,13 @@ void Game::addDealer(){
     person->setPlayerName("Dealer");
     person->setCashRemaining(10000000);     //ten million dollars
     cout <<  "\nDealer: Hello my name is Bob. Welcome to my table.\n\nWhat are your names? \n" << endl;
-    //cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
+    cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
     PlayerList->addNode(*person);
 }
 
 void Game::addPlayer(){
     Player *person = new Player;
-    for(int i = 1; i <= PlayerList->size(); i++){
+    for(int i = 1; i <= numPlayers; i++){
 
         char correct = false;
         while(correct != true) {                    //allows user to correct name and buy in amount
@@ -177,13 +179,17 @@ void Game::addPlayer(){
 void Game::printPlayer(){
     Node<Player>* curr;
     curr = PlayerList->begin()->getNextNode();      //bypass dealer
-    for(int i = 0; i < PlayerList->size(); i++) {
+    for(int i = 0; i < PlayerList->size()-1; i++) {
         cout << "Player Name: " << curr->getVal().getPlayerName()<< endl;
         cout << "Player Bet:  " << curr->getVal().getCashRemaining() << endl;
         curr = curr->getNextNode();
     }
     cout << "Dealer: Buy in complete. Good Luck." << endl;
 }//end printPlayer()
+
+//void Game::setNumPlayers(int num) {
+//    this->numPlayers = num;
+//}
 
 ///////////////////////////
 /* Dealer Class Functions */

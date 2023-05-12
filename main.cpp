@@ -56,10 +56,11 @@ using namespace std;
 int main() {
   //cout << getRandomNum() << endl;
   // startGame();
-  //Deck *deckPtr = new Deck("standard");
+  Deck *deckPtr = new Deck("standard");
   //deckPtr->print();
-
-
+  Game *startGame = new Game();
+  startGame->loadPlayers();
+  startGame->printPlayer();
   //Player* player1 = new Player;
   //player1->startingPlayerNum();
   //player1->printPlayer();

@@ -51,7 +51,7 @@ private:
     int numCards;           //number of cards in hand
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
-
+protected:
     linkedList<Card> *Hand; //linked list of cards
 public:
 
@@ -77,25 +77,28 @@ public:
 /////////////////
 /* Game Class */
 ///////////////
-class Game{
+class Game: Deck{                               //inherits from deck class
 protected:
     linkedList<Player> *PlayerList;             //linked list of cards
-
+    int numPlayers;                             //needed for forloop to add players while LL size is 0.
 public:
     Game();                                     //default constructor
-    void startingPlayerNum();                   //gets number of players
+    void loadGame();
     void addDealer();
     void addPlayer();
     void printPlayer();
+    void optionsMenu();
+//    void setNumPlayers(int num);
 };//end Player class
 
 /////////////////
 /* Dealer Class */
 ///////////////
-class Dealer: Game{
+class Dealer: Game, Player{
 private:
     void addMoney(string name, int num);
     void subMoney(string name, int num);
+    void dealCard(/* card from top of deck*/);
 public:
 
 };

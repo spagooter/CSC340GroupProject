@@ -233,9 +233,9 @@ void Game::optionsMenu() {
                 endGame = true;
                 break;
             case 1:
-                cout << "Dealing cards...\n" << endl;      //Deal 2 cards to dealer and each player
+                cout << "Dealing cards...\n" << endl;
                 if(cardsDealt == false){
-                    //Bob->dealCard(pass card object)          //card object from top of deck
+                    //Bob->dealCard();          //card object from top of deck
                     cardsDealt = true;
                 }else{
                     cout << "Cards have already been dealt" << endl;
@@ -278,14 +278,17 @@ void Dealer::subMoney(string name, int num) {
         curr = curr->getNextNode();
     }
 }
-void Dealer::dealCard(/*Card from top of deck*/) {
+void Dealer::dealCard() {                                   //deals one card to each person first then again for a total of two.
+    Node<Card> *topOfDeck = Cards->begin();                 //pointer to top of deck
     for(int i = 0; i < 2; i++){
-        Node<Player> *curr = PlayerList->begin();           //deals one card to each person first for again for a total of two.
+        Node<Player> *curr = PlayerList->begin();           //pointer to dealer and player
+        Node<Card> *hand = Hand->begin();                   //pointer to a players hand
         for(int j = 0; i <PlayerList->size(); i++){
-            //Hand->addNode(curr);
-            curr = curr->getNextNode();
+            cout << "top of Deck: " << topOfDeck->getVal().getSuit() << " " << topOfDeck->getVal().getSymbol() << " " << topOfDeck->getVal().getValue() << endl;
+
+            //Hand->addNode(reference to card??);
+            curr = curr->getNextNode();                     //next player
+            topOfDeck = topOfDeck->getNextNode();           //next card
         }
-
     }
-
 }

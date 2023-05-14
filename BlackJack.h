@@ -25,15 +25,23 @@ public:
     bool operator==(Card& rhs);
     Card& operator=(const Card& rhs);
     void print();
+    string getSuit(){return this->suit;}
+    string getSymbol(){return this->symbol;}
+    int getValue(){return this->value;}
+
+    void setSuit(string suit){this->suit = suit;}
+    void setSymbol(string symbol){this->symbol = symbol;}
 };
 
 /////////////////
 /* Deck Class */
 ///////////////
 class Deck {
+protected:
+    linkedList<Card> *Cards = nullptr;  //deck has a linked list of cards
 private:
     const string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
-    linkedList<Card> *Cards = nullptr;  //deck has a linked list of cards
+
 public:
     Deck();                   //default constructor
     Deck(string standard);    //this constructor takes a string and initializes a standard deck.
@@ -77,7 +85,7 @@ public:
 /////////////////
 /* Game Class */
 ///////////////
-class Game: Deck{                               //inherits from deck class
+class Game{                               //inherits from deck class
 protected:
     linkedList<Player> *PlayerList;             //linked list of cards
     int numPlayers;                             //needed for forloop to add players while LL size is 0.
@@ -94,11 +102,11 @@ public:
 /////////////////
 /* Dealer Class */
 ///////////////
-class Dealer: Game, Player{
+class Dealer: Game, Player, Deck{                     //need access to PlayerList LL and Deck LL??
 private:
     void addMoney(string name, int num);
     void subMoney(string name, int num);
-    void dealCard(/* card from top of deck*/);
+    void dealCard();
 public:
 
 };

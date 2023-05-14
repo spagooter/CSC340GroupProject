@@ -23,6 +23,8 @@ public:
     Card();                       //default constructor
     Card(string suit, int num);   //this constructor takes a suit and a num, other attributes are inferred
     bool operator==(Card& rhs);
+    Card& operator=(const Card& rhs);
+    void print();
 };
 
 /////////////////
@@ -30,6 +32,7 @@ public:
 ///////////////
 class Deck {
 private:
+    const string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
     linkedList<Card> *Cards = nullptr;  //deck has a linked list of cards
 public:
     Deck();                   //default constructor

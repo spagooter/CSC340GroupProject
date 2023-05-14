@@ -50,17 +50,24 @@ public:
     void print();
     void remove(T data);
     void removeNode(Node<T> *temp);
+    void swap(Node<T>* index1, Node<T>* index2);
     int size() { return this->length; }
     Node<T> *begin() { return this->first; }
     Node<T> *end() { return this->last; }
     Node<T> *find(T data);
     linkedList& operator=(const linkedList &rhs);
-
 };
 
 ///////////////////////////////////
 /* linked list member functions */
 /////////////////////////////////
+template <typename T>
+void linkedList<T>::swap(Node<T>* index1, Node<T>* index2) {
+  T temp = index1->val;
+  index1->val = index2->val;
+  index2->val = temp;
+}
+
 //destructor
 template <typename T>
 linkedList<T>::~linkedList<T>(){
@@ -135,11 +142,11 @@ linkedList<T>::linkedList() {
 //this function prints the list
 template <typename T>
 void linkedList<T>::print() {
-    auto iter = this->first;
-    while (iter != nullptr) {
-        cout << iter->val << endl;
-        iter = iter->next;
-    }
+  auto iter = this->first;
+  while (iter != nullptr) {
+    cout << iter->val << endl;
+    iter = iter->next;
+  }
 }
 
 ////////////////////////////

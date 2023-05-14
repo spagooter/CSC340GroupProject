@@ -40,6 +40,17 @@ bool Card::operator==(Card& rhs){
   return (this->symbol == rhs.symbol && this->suit == rhs.suit);
 }
 
+Card& Card::operator=(const Card& rhs){
+  this->suit = rhs.suit;
+  this->symbol = rhs.symbol;
+  this->value = rhs.value;
+  return *this;
+}
+
+void Card::print() {
+  cout << symbol << " of " << suit << endl;
+}
+
 ///////////////////////////
 /* Deck Class Functions */
 /////////////////////////
@@ -49,22 +60,32 @@ void Deck::addCard(Card card) {
 }
 
 //this function shuffles the deck
-/*void Deck::shuffle() {
-  int newDeckSize = this->Cards->size();
-  int randIndex;
-  Deck* newDeck = new Deck();
-  auto iter = this->Cards->begin();
-  for (int i = 0; i < newDeckSize; ++i) {
-    randIndex = rand() % this->Cards->size() + 1;
-    for (int j = 0; j < randIndex; ++j) {
-      iter = iter->getNextNode();
+void Deck::shuffle() {
+  int outerLoop = this->Cards->size();  //outer loop loops for every card in the deck
+  int innerLoop = outerLoop - 1; //inner loop is a dummy variable that keeps track of the size of the unshuffled portion
+  auto iter1 = this->Cards->begin();  //iter1 is the current card to be swapped
+  int randIndex;  //a random index within the unshuffled portion
+  Node<Card>* iter2;  //iter2 is incremented randIndex number of times, within the current unshuffled portion
+  for (int i = 0; i < outerLoop; ++i) {   //for every card in the deck,
+    if (iter1 == this->Cards->end()) {  //when iter reaches the end, deck is shuffled
+      //cout << "Shuffled!" << endl;
+      return;
     }
-    newDeck->Cards->addNode(iter->getVal());
-    this->Cards->removeNode(iter);
+    randIndex = rand() % innerLoop;
+    iter2 = iter1->getNextNode();
+    for (int j = 0; j < randIndex; ++j) {
+      if (iter2 == nullptr) {
+        cout << "out of bounds";
+        return;
+      }
+      else
+        iter2 = iter2->getNextNode();
+    }
+    this->Cards->swap(iter1, iter2);
+    iter1 = iter1->getNextNode();
+    --innerLoop;
   }
-  *(this->Cards) = *(newDeck->Cards);
-  delete newDeck;
-}*/
+}
 
 //default deck constructor
 Deck::Deck() {
@@ -74,7 +95,6 @@ Deck::Deck() {
 //deck constructor that takes a string, any string, and constructs a standard deck;
 Deck::Deck(string standard) {
   Cards = new linkedList<Card>();                                               //declare linked list of cards
-  string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
   Card *card;
   for (string suit: suits) {          //for each suit
     for (int i = 1; i <= 13; i++) {   //for each number
@@ -83,6 +103,7 @@ Deck::Deck(string standard) {
     }
   }
 }
+
 
 //this function prints the deck
 void Deck::print() {

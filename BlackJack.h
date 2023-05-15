@@ -38,13 +38,14 @@ public:
 ///////////////
 class Deck {
 protected:
-    linkedList<Card> *Cards = nullptr;  //deck has a linked list of cards
+    linkedList<Card> *Cards = new linkedList<Card>();  //deck has a linked list of cards
 private:
     const string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
 
 public:
     Deck();                   //default constructor
     Deck(string standard);    //this constructor takes a string and initializes a standard deck.
+    Deck(string shoe, int numOfDecks);
     void print();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
     void addCard(Card card);

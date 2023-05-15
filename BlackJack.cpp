@@ -94,12 +94,10 @@ void Deck::shuffle() {
 
 //default deck constructor
 Deck::Deck() {
-  Cards = new linkedList<Card>();
 }
 
 //deck constructor that takes a string, any string, and constructs a standard deck;
-Deck::Deck(string standard) {
-  Cards = new linkedList<Card>();                                               //declare linked list of cards
+Deck::Deck(string standard) {                                             //declare linked list of cards
   Card *card;
   for (string suit: suits) {          //for each suit
     for (int i = 1; i <= 13; i++) {   //for each number
@@ -109,6 +107,18 @@ Deck::Deck(string standard) {
   }
 }
 
+//deck constructor that inintializes a shoe with multiple decks
+Deck::Deck(string shoe, int numOfDecks) {
+  Card* card;
+  for (int i = 0; i < numOfDecks; i++) {
+    for (string suit : suits) {
+      for (int i = 1; i <= 13; i++) {   //for each number
+        card = new Card(suit, i);
+        Cards->addNode(*card);     //add card to deck
+      }
+    }
+  }
+}
 
 //this function prints the deck
 void Deck::print() {
@@ -117,7 +127,7 @@ void Deck::print() {
     cout << iter->getVal().symbol << " of " << iter->getVal().suit << " " << endl;
     iter = iter->getNextNode();
   }
-  cout << Cards->size();  //display the size
+  cout << "size: " << this->Cards->size();
 }
 
 ///////////////////////////

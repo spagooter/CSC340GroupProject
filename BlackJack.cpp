@@ -5,6 +5,9 @@
 /* Card Member Functions */
 //////////////////////////
 #include "BlackJack.h"
+#include <cstdlib>
+#include <ctime>
+
 Card::Card() {
   //card class has suit, symbol, and value
   suit = " ";
@@ -66,6 +69,8 @@ void Deck::shuffle() {
   auto iter1 = this->Cards->begin();  //iter1 is the current card to be swapped
   int randIndex;  //a random index within the unshuffled portion
   Node<Card>* iter2;  //iter2 is incremented randIndex number of times, within the current unshuffled portion
+  srand(time(0));
+
   for (int i = 0; i < outerLoop; ++i) {   //for every card in the deck,
     if (iter1 == this->Cards->end()) {  //when iter reaches the end, deck is shuffled
       //cout << "Shuffled!" << endl;

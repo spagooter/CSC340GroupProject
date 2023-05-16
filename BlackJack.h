@@ -29,7 +29,7 @@ public:
     string getSymbol(){return this->symbol;}
     int getValue(){return this->value;}
 
-    void setSuit(string suit){this->suit = suit;}
+    void setSuit(string suit){ this->suit = suit;}
     void setSymbol(string symbol){this->symbol = symbol;}
 };
 
@@ -48,19 +48,21 @@ public:
     void print();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
     void addCard(Card card);
+    Card getTopCard();
+
 };
 
 /////////////////
 /* Player Class */
 ///////////////
-class Player {
+class Player{
 private:
     string playerName;      //player name
     int numCards;           //number of cards in hand
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
 protected:
-    linkedList<Card> *Hand; //linked list of cards
+    linkedList<Card> *Hand = nullptr; //linked list of cards
 public:
 
     Player();
@@ -85,9 +87,10 @@ public:
 /////////////////
 /* Game Class */
 ///////////////
-class Game{                               //inherits from deck class
+class Game: Player{                               //inherits from deck class
 protected:
-    linkedList<Player> *PlayerList;             //linked list of cards
+    linkedList<Player> *PlayerList = nullptr;             //linked list of cards
+    Deck *dealerDeck = new Deck("standard");
     int numPlayers;                             //needed for forloop to add players while LL size is 0.
 public:
     Game();                                     //default constructor
@@ -96,19 +99,22 @@ public:
     void addPlayer();
     void printPlayer();
     void optionsMenu();
+    void dealCards();
 //    void setNumPlayers(int num);
 };//end Player class
 
 /////////////////
 /* Dealer Class */
 ///////////////
-class Dealer: Game, Player, Deck{                     //need access to PlayerList LL and Deck LL??
+class Dealer: Game, Player, Deck, Card{                     //need access to PlayerList LL and Deck LL??
 private:
+    //Deck *dealerDeck = new Deck("standard");
+    linkedList<Card> *dealerHand;
+public:
     void addMoney(string name, int num);
     void subMoney(string name, int num);
     void dealCard();
-public:
-
+    void shuffleDeck();
 };
 
 

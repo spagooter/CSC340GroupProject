@@ -115,6 +115,14 @@ void Deck::print() {
   cout << Cards->size();  //display the size
 }
 
+Card Deck::getTopCard(){
+    Card top;
+    Node<Card> *curr = Cards->begin();
+    top = curr->getVal();
+    //top = Cards->begin();
+    return top;
+}
+
 ///////////////////////////
 /* Player Class Functions */
 /////////////////////////
@@ -123,7 +131,7 @@ Player::Player() {
     playerName = "";
     numCards = 0;
     cardsValue = 0;
-    Hand = nullptr;
+    Hand = new linkedList<Card>();
 }
 
 string Player::getPlayerName() { return this->playerName; }
@@ -152,11 +160,12 @@ void Player::setCashRemaining() {
 /* Game Class Functions */
 /////////////////////////
 Game::Game(){
-    PlayerList = nullptr;
+    numPlayers = 0;
 }
 
 void Game::loadGame() {
-    Deck *deckPtr = new Deck("standard");
+    //Deck *deckPtr = new Deck("standard");
+    //deckPtr->shuffle();
     //deckPtr->print();
     PlayerList = new linkedList<Player>();
     int num;
@@ -235,7 +244,9 @@ void Game::optionsMenu() {
             case 1:
                 cout << "Dealing cards...\n" << endl;
                 if(cardsDealt == false){
-                    //Bob->dealCard();          //card object from top of deck
+                    Bob->shuffleDeck();
+                    dealCards();
+                    //Bob->dealCard();          //deal cards
                     cardsDealt = true;
                 }else{
                     cout << "Cards have already been dealt" << endl;
@@ -250,6 +261,34 @@ void Game::optionsMenu() {
         }// end switch
     }while(endGame != true);
 }// end optionsMenu
+
+void Game::dealCards() {
+    cout << "in Game::dealCard" << endl;
+    Card *tempCard;
+    Node<Player>* curr;
+    curr = PlayerList->begin();      //player list
+    Node<Card>* card;
+    card = Hand->begin();                           //player hand
+    //Hand->addNode();
+    Node<Card>* topCard;
+    //topCard = dealerDeck->
+    cout <<" playerlist size: " << PlayerList->size() << endl;
+    for(int i = 0; i < PlayerList->size(); i++){
+        cout << "i: " << i << endl;
+        cout << curr->getVal().getPlayerName() << endl;
+        tempCard("Ace", 10);
+        //tempCard->setSuit("Spades");
+        //Hand->addNode(*tempCard);
+        //cout << "hand: " << card->getVal().getSuit() << endl;
+//        if(i < PlayerList->size()-1){
+//            curr = curr->getNextNode();
+//        }
+
+    }
+    //cout << curr->getVal().getPlayerName();
+    //printPlayer();
+}
+
 
 //void Game::setNumPlayers(int num) {
 //    this->numPlayers = num;
@@ -279,16 +318,11 @@ void Dealer::subMoney(string name, int num) {
     }
 }
 void Dealer::dealCard() {                                   //deals one card to each person first then again for a total of two.
-    Node<Card> *topOfDeck = Cards->begin();                 //pointer to top of deck
-    for(int i = 0; i < 2; i++){
-        Node<Player> *curr = PlayerList->begin();           //pointer to dealer and player
-        Node<Card> *hand = Hand->begin();                   //pointer to a players hand
-        for(int j = 0; i <PlayerList->size(); i++){
-            cout << "top of Deck: " << topOfDeck->getVal().getSuit() << " " << topOfDeck->getVal().getSymbol() << " " << topOfDeck->getVal().getValue() << endl;
+    //Node<Card> *curr = dealerDeck->
+}
 
-            //Hand->addNode(reference to card??);
-            curr = curr->getNextNode();                     //next player
-            topOfDeck = topOfDeck->getNextNode();           //next card
-        }
-    }
+void Dealer::shuffleDeck() {
+    cout << "in shuffle deck" << endl;
+    dealerDeck->shuffle();
+    //dealerDeck->print();
 }

@@ -276,7 +276,7 @@ void Game::dealCards() {
     for(int i = 0; i < PlayerList->size(); i++){
         cout << "i: " << i << endl;
         cout << curr->getVal().getPlayerName() << endl;
-        tempCard("Ace", 10);
+        tempCard->setSymbol("5");
         //tempCard->setSuit("Spades");
         //Hand->addNode(*tempCard);
         //cout << "hand: " << card->getVal().getSuit() << endl;

@@ -5,6 +5,9 @@
 /* Card Member Functions */
 //////////////////////////
 #include "BlackJack.h"
+#include <cstdlib>
+#include <ctime>
+
 Card::Card() {
   //card class has suit, symbol, and value
   suit = " ";
@@ -66,6 +69,8 @@ void Deck::shuffle() {
   auto iter1 = this->Cards->begin();  //iter1 is the current card to be swapped
   int randIndex;  //a random index within the unshuffled portion
   Node<Card>* iter2;  //iter2 is incremented randIndex number of times, within the current unshuffled portion
+  srand(time(0));
+
   for (int i = 0; i < outerLoop; ++i) {   //for every card in the deck,
     if (iter1 == this->Cards->end()) {  //when iter reaches the end, deck is shuffled
       //cout << "Shuffled!" << endl;
@@ -89,12 +94,10 @@ void Deck::shuffle() {
 
 //default deck constructor
 Deck::Deck() {
-  Cards = new linkedList<Card>();
 }
 
 //deck constructor that takes a string, any string, and constructs a standard deck;
-Deck::Deck(string standard) {
-  Cards = new linkedList<Card>();                                               //declare linked list of cards
+Deck::Deck(string standard) {                                             //declare linked list of cards
   Card *card;
   for (string suit: suits) {          //for each suit
     for (int i = 1; i <= 13; i++) {   //for each number
@@ -104,6 +107,18 @@ Deck::Deck(string standard) {
   }
 }
 
+//deck constructor that inintializes a shoe with multiple decks
+Deck::Deck(string shoe, int numOfDecks) {
+  Card* card;
+  for (int i = 0; i < numOfDecks; i++) {
+    for (string suit : suits) {
+      for (int i = 1; i <= 13; i++) {   //for each number
+        card = new Card(suit, i);
+        Cards->addNode(*card);     //add card to deck
+      }
+    }
+  }
+}
 
 //this function prints the deck
 void Deck::print() {
@@ -112,7 +127,7 @@ void Deck::print() {
     cout << iter->getVal().symbol << " of " << iter->getVal().suit << " " << endl;
     iter = iter->getNextNode();
   }
-  cout << Cards->size();  //display the size
+  cout << "size: " << this->Cards->size();
 }
 
 Card Deck::getTopCard(){

@@ -50,6 +50,7 @@ public:
     void print();
     void remove(T data);
     void removeNode(Node<T> *temp);
+    void join(Node<T> *position, linkedList<T> &otherList);
     void swap(Node<T>* index1, Node<T>* index2);
     int size() { return this->length; }
     Node<T> *begin() { return this->first; }
@@ -123,6 +124,40 @@ void linkedList<T>::addNode(Node<T>* temp) {
     }
     ++this->length;
 }
+
+template<typename T>
+void linkedList<T>::join(Node<T>* pos, linkedList<T>& other) {
+    if (other.first == nullptr) {
+        return;
+    }
+    if (this->first == nullptr) {
+        this->first = other.first;
+        this->last = other.last;
+        this->length = other.length;
+        other.first = nullptr;
+        other.last = nullptr;
+        other.length = 0;
+        return;
+    }
+    auto posPrev = pos->prev;
+    auto otherFirst = other.first;
+    auto otherLast = other.last;
+    auto otherLength = other.length;
+    if (posPrev != nullptr) {
+        posPrev->next = otherFirst;
+        otherFirst->prev = posPrev;
+    }
+    else {
+        this->first = otherFirst;
+    }
+    otherLast->next = pos;
+    pos->prev = otherLast;
+    this->length += otherLength;
+    other.first = nullptr;
+    other.last = nullptr;
+    other.length = 0;
+}
+
 
 //template to add nodes from data
 template <typename T>

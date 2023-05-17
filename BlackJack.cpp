@@ -215,9 +215,6 @@ void Game::loadGame() {
     cout << "Welcome to our BlackJack table." << endl;
     cout << endl << "Enter number of players: (max 5)" << endl;
     cin >> num;
-    numPlayers = num;
-    cout << "Number of players: " << numPlayers << endl;
-    addDealer();
     addPlayer();
 }
 

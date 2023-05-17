@@ -112,10 +112,10 @@ public:
 class Game{                               //inherits from deck class
     friend class Dealer;
 protected:
-    Dealer* dealer;                       //this will be the dealer for the game
-    linkedList<Player> *PlayerList;       //linked list of cards                      //needed for forloop to add players while LL size is 0.
-    Deck* shoe;                           //this is where we draw cards from
-    Deck* shoe2;                          //this is where the cards go to
+    Dealer* dealer = nullptr;                       //this will be the dealer for the game
+    linkedList<Player> *PlayerList = nullptr;       //linked list of cards                      //needed for forloop to add players while LL size is 0.
+    Deck* shoe = nullptr;                           //this is where we draw cards from
+    Deck* shoe2 = nullptr;                          //this is where the cards go to
 public:
     Game();                               //default constructor
     void loadGame();

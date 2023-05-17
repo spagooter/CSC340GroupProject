@@ -73,7 +73,7 @@ void Deck::shuffle() {
   auto iter1 = this->Cards->begin();  //iter1 is the current card to be swapped
   int randIndex;  //a random index within the unshuffled portion
   Node<Card>* iter2;  //iter2 is incremented randIndex number of times, within the current unshuffled portion
-  srand(time(0));
+  srand(time(0));   //seed the rand() function with the current time for a good random shuffle
 
   for (int i = 0; i < outerLoop; ++i) {   //for every card in the deck,
     if (iter1 == this->Cards->end()) {  //when iter reaches the end, deck is shuffled
@@ -102,7 +102,8 @@ Deck::Deck() {
 }
 
 //deck constructor that takes a string, any string, and constructs a standard deck;
-Deck::Deck(string standard) {                                             //declare linked list of cards
+Deck::Deck(string standard) {//declare linked list of cards
+  Cards = new linkedList<Card>();
   Card *card;
   for (string suit: suits) {          //for each suit
     for (int i = 1; i <= 13; i++) {   //for each number
@@ -114,11 +115,12 @@ Deck::Deck(string standard) {                                             //decl
 
 //deck constructor that inintializes a shoe with multiple decks
 Deck::Deck(string shoe, int numOfDecks) {
+  Cards = new linkedList<Card>();
   Card* card;
   for (int i = 0; i < numOfDecks; i++) {
     for (string suit : suits) {
-      for (int i = 1; i <= 13; i++) {   //for each number
-        card = new Card(suit, i);
+      for (int j = 1; j <= 13; j++) {   //for each number
+        card = new Card(suit, j);
         Cards->addNode(*card);     //add card to deck
       }
     }
@@ -215,7 +217,7 @@ void Player::addCardToHand(Card card) {
 /////////////////////////
 Game::Game(){
     dealer = new Dealer("Dealer", 999999);
-    PlayerList = new linkedList<Player>;
+    PlayerList = new linkedList<Player>();
     shoe = new Deck("shoe", 6);
     shoe2 = new Deck();
 }

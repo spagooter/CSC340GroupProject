@@ -293,20 +293,37 @@ void Game::printPlayer(){
 
 void Game::optionsMenu() {
     bool endGame = false;
+    bool betsPlaced = false;
     bool cardsDealt = false;
     Dealer *Bob = new Dealer("bob", 999999);
     int num;
     do{
+        if(cardsDealt == false){
+            placeBets();
+            betsPlaced = true;
+        }
+        //printPlayer();
+        if(cardsDealt == true) {
+            printCards();
+        }
+        printPlayer();
+        if(betsPlaced == true && cardsDealt == true){
+            Node<Player> *curr = PlayerList->begin();
+            for(int i = 0; i < PlayerList->size();i++){
+                cout << "***************************************************" << endl;
+                cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay" << endl;
+                cout << "***************************************************" << endl;
+                if(i < PlayerList->size()-1){
+                    curr = curr->getNextNode();
+                }
+            }
+        }
         cout << "Please choose an option from the game menu: " << endl;
         cout << "Option 0: End the Game" << endl;
         cout << "Option 1: Deal the cards" << endl;
         cout << "Option 2: Hit" << endl;
         cout << "Option 3: Stay" << endl;
-        if(cardsDealt == false){
-            placeBets();
-        }
-        printPlayer();
-        printCards();
+        cout << " " << endl;
         cin >> num;
         switch(num){
             case 0:
@@ -334,8 +351,9 @@ void Game::optionsMenu() {
 
 void Game::printCards() {
     Node<Player> *curr = PlayerList->begin();
+    cout << " " << endl;
     cout << "***************************************************" << endl;
-    cout << "\t Dealers Cards: " << endl;
+    cout << "\t Dealer's Cards: " << endl;
     cout << "***************************************************" << endl;
     for(int i = 0; i <PlayerList->size();i++){
         cout << "***************************************************" << endl;

@@ -28,6 +28,7 @@ public:
     Card(string suit, int num);   //this constructor takes a suit and a num, other attributes are inferred
     bool operator==(Card& rhs);
     Card& operator=(const Card& rhs);
+    friend ostream& operator<<(ostream &os, const Card& card);
     void print();
     string getSuit(){return this->suit;}
     string getSymbol(){return this->symbol;}
@@ -70,8 +71,8 @@ protected:
     string playerName;      //player name
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
+    Deck *Hand; //linked list of cards
 public:
-     Deck *Hand; //linked list of cards
     /* constructors */
     Player();
     Player(string name, int cashRemaining);
@@ -90,6 +91,7 @@ public:
     void updateCardsValue();
     void print();
     void printHand();
+    void addCardToHand(Card card);
 
     //void hit();
     //void stand();
@@ -98,7 +100,7 @@ public:
 /////////////////
 /* Dealer Class */
 ///////////////
-class Dealer: protected Player{                     //need access to PlayerList LL and Deck LL??
+class Dealer: protected Player{           //need access to PlayerList LL and Deck LL??
 private:
 public:
     Dealer(string name, int cashRemaining);
@@ -110,11 +112,12 @@ public:
 class Game{                               //inherits from deck class
     friend class Dealer;
 protected:
-    Dealer* dealer;
-    linkedList<Player> *PlayerList;             //linked list of cards                      //needed for forloop to add players while LL size is 0.
-    Deck* shoe;
+    Dealer* dealer;                       //this will be the dealer for the game
+    linkedList<Player> *PlayerList;       //linked list of cards                      //needed for forloop to add players while LL size is 0.
+    Deck* shoe;                           //this is where we draw cards from
+    Deck* shoe2;                          //this is where the cards go to
 public:
-    Game();                                     //default constructor
+    Game();                               //default constructor
     void loadGame();
     void addDealer();
     void addPlayer();

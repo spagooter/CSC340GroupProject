@@ -56,12 +56,20 @@ public:
     Node<T> *begin() { return this->first; }
     Node<T> *end() { return this->last; }
     Node<T> *find(T data);
+    T pop();
     linkedList& operator=(const linkedList &rhs);
 };
 
 ///////////////////////////////////
 /* linked list member functions */
 /////////////////////////////////
+template <typename T>
+T linkedList<T>::pop() {
+  T temp = this->last->val;
+  this->removeNode(this->last);
+  return temp;
+}
+
 template <typename T>
 void linkedList<T>::remove(T data) {
   auto iter = this->find(data);

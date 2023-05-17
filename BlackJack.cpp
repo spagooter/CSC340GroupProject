@@ -50,6 +50,10 @@ Card& Card::operator=(const Card& rhs){
   return *this;
 }
 
+ostream& operator<<(ostream& os, const Card& card) {
+  return (os << card.symbol << " of " << card.suit);
+}
+
 void Card::print() {
   cout << symbol << " of " << suit << endl;
 }
@@ -128,7 +132,6 @@ void Deck::print() {
     cout << iter->getVal().symbol << " of " << iter->getVal().suit << " " << endl;
     iter = iter->getNextNode();
   }
-  cout << "size: " << this->Cards->size();
 }
 
 Card Deck::getTopCard(){
@@ -197,13 +200,24 @@ void Player::print() {
   cout << "Name: " << this->playerName << ", Cash Remaining: $" << this->cashRemaining << endl;
 }
 
+void Player::printHand() {
+  this->Hand->print();
+  updateCardsValue();
+  cout << "Value: " << cardsValue << endl;
+}
+
+void Player::addCardToHand(Card card) {
+  this->Hand->addCard(card);
+}
+
 ///////////////////////////
 /* Game Class Functions */
 /////////////////////////
 Game::Game(){
     dealer = new Dealer("Dealer", 999999);
     PlayerList = new linkedList<Player>;
-
+    shoe = new Deck("shoe", 6);
+    shoe2 = new Deck();
 }
 
 void Game::loadGame() {

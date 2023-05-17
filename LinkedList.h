@@ -63,6 +63,34 @@ public:
 /* linked list member functions */
 /////////////////////////////////
 template <typename T>
+void linkedList<T>::remove(T data) {
+  auto iter = this->find(data);
+  remove(iter);
+}
+
+template <typename T>
+void linkedList<T>::removeNode(Node<T> * temp) {
+  if (temp == this->first){
+    this->first = this->first->next ? this->first->next : nullptr;
+    this->first->prev->next = nullptr;
+    this->first->prev = nullptr;
+  }
+  else if (temp == this->last) {
+    this->last = this->last->prev ? this->last->prev : nullptr;
+    this->last->next->prev = nullptr;
+    this->last->next = nullptr;
+  }
+  else {
+    temp->next->prev = temp->prev;
+    temp->prev->next = temp->next;
+    temp->prev = nullptr;
+    temp->next = nullptr;
+  }
+  delete temp;
+  --this->length;
+}
+
+template <typename T>
 void linkedList<T>::swap(Node<T>* index1, Node<T>* index2) {
   T temp = index1->val;
   index1->val = index2->val;

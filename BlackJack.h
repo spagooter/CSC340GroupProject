@@ -14,6 +14,10 @@
 ///////////////
 class Card {
     friend class Deck;            //deck is a friend class, so it can access class members
+    friend class Game;
+    friend class Dealer;
+    friend class Player;
+
 private:
     //cards have a suit (ace), symbol (spade), and value (11)
     string suit;
@@ -31,40 +35,45 @@ public:
 
     void setSuit(string suit){this->suit = suit;}
     void setSymbol(string symbol){this->symbol = symbol;}
+    void setValue(int newVal) {this->value = newVal;}
 };
 
 /////////////////
 /* Deck Class */
 ///////////////
 class Deck {
-protected:
-    linkedList<Card> *Cards = new linkedList<Card>();  //deck has a linked list of cards
+    friend class Player;
+    friend class Dealer;
+    friend class Game;
 private:
     const string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
-
+protected:
 public:
+    linkedList<Card> *Cards;  //deck has a linked list of cards
     Deck();                   //default constructor
     Deck(string standard);    //this constructor takes a string and initializes a standard deck.
     Deck(string shoe, int numOfDecks);
     void print();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
     void addCard(Card card);
+    int size() { return this->Cards->size(); }
+
 };
 
 /////////////////
 /* Player Class */
 ///////////////
 class Player {
-private:
+    friend class Deck;
+protected:
     string playerName;      //player name
-    int numCards;           //number of cards in hand
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
-protected:
-    linkedList<Card> *Hand; //linked list of cards
 public:
-
+     Deck *Hand; //linked list of cards
+    /* constructors */
     Player();
+    Player(string name, int cashRemaining);
     //************************** getters *********************************
     string getPlayerName();
     int getNumCards();
@@ -75,21 +84,34 @@ public:
     void setPlayerName(int i);
     void setPlayerName(string name);
     void setNumCards(int num);
-    void setCardsValue(int num);
     void setCashRemaining(int num);
     void setCashRemaining();
+    void updateCardsValue();
+    void print();
+    void printHand();
 
     //void hit();
     //void stand();
 };
 
 /////////////////
+/* Dealer Class */
+///////////////
+class Dealer: protected Player{                     //need access to PlayerList LL and Deck LL??
+private:
+public:
+    Dealer(string name, int cashRemaining);
+};
+
+/////////////////
 /* Game Class */
 ///////////////
 class Game{                               //inherits from deck class
+    friend class Dealer;
 protected:
-    linkedList<Player> *PlayerList;             //linked list of cards
-    int numPlayers;                             //needed for forloop to add players while LL size is 0.
+    Dealer* dealer;
+    linkedList<Player> *PlayerList;             //linked list of cards                      //needed for forloop to add players while LL size is 0.
+    Deck* shoe;
 public:
     Game();                                     //default constructor
     void loadGame();
@@ -97,20 +119,12 @@ public:
     void addPlayer();
     void printPlayer();
     void optionsMenu();
-//    void setNumPlayers(int num);
-};//end Player class
-
-/////////////////
-/* Dealer Class */
-///////////////
-class Dealer: Game, Player, Deck{                     //need access to PlayerList LL and Deck LL??
-private:
     void addMoney(string name, int num);
     void subMoney(string name, int num);
     void dealCard();
-public:
+//    void setNumPlayers(int num);
+};//end Player class
 
-};
 
 
 

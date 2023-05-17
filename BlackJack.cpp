@@ -94,6 +94,7 @@ void Deck::shuffle() {
 
 //default deck constructor
 Deck::Deck() {
+  Cards = new linkedList<Card>();
 }
 
 //deck constructor that takes a string, any string, and constructs a standard deck;
@@ -134,16 +135,26 @@ void Deck::print() {
 /* Player Class Functions */
 /////////////////////////
 
+Player::Player(string name, int cashRemaining) {
+  this->playerName = name;
+  this->cashRemaining = cashRemaining;
+  this->Hand = new Deck();
+}
+
 Player::Player() {
     playerName = "";
-    numCards = 0;
     cardsValue = 0;
-    Hand = nullptr;
+    Hand = new Deck();
 }
 
 string Player::getPlayerName() { return this->playerName; }
-int Player::getNumCards() { return this->numCards; }
-int Player::getCardsValue() { return this->cardsValue; }
+int Player::getNumCards() { return this->Hand->size(); }
+int Player::getCardsValue() {
+  if (this->Hand->size() == 0)
+    this->cardsValue = 0;
+
+  return this->cardsValue;
+}
 int Player::getCashRemaining() { return this->cashRemaining; }
 
 void Player::setPlayerName(int i) {
@@ -153,8 +164,6 @@ void Player::setPlayerName(int i) {
     this->playerName = str;
 }
 void Player::setPlayerName(string name) { this->playerName = name; }
-void Player::setNumCards(int num) { this->numCards = num; }
-void Player::setCardsValue(int num) { this->cardsValue = this->cardsValue + num; }
 void Player::setCashRemaining(int num) { this->cashRemaining = num; }
 void Player::setCashRemaining() {
     cout << "Buy in amount: ";
@@ -162,12 +171,31 @@ void Player::setCashRemaining() {
     cin >> bet;
     this->cashRemaining = bet;
 }
+void Player::updateCardsValue() {
+  int sum = 0;
+  auto iter = this->Hand->Cards->begin();
+  while (iter != nullptr) {
+    sum += iter->getVal().getValue();
+    iter = iter->getNextNode();
+  }
+  if (this->Hand->Cards->end()->getVal().getSymbol() == "A" && sum > 21) {
+    this->Hand->Cards->end()->getVal().setValue(1);
+    sum -= 10;
+  }
+  this->cardsValue = sum;
+}
+
+void Player::print() {
+  cout << "Name: " << this->playerName << ", Cash Remaining: $" << this->cashRemaining << endl;
+}
 
 ///////////////////////////
 /* Game Class Functions */
 /////////////////////////
 Game::Game(){
-    PlayerList = nullptr;
+    dealer = new Dealer("Dealer", 999999);
+    PlayerList = new linkedList<Player>;
+
 }
 
 void Game::loadGame() {
@@ -178,10 +206,6 @@ void Game::loadGame() {
     cout << "Welcome to our BlackJack table." << endl;
     cout << endl << "Enter number of players: (max 5)" << endl;
     cin >> num;
-    numPlayers = num;
-    cout << "Number of players: " << numPlayers << endl;
-    addDealer();
-    addPlayer();
 }
 
 void Game::addDealer(){
@@ -195,7 +219,7 @@ void Game::addDealer(){
 
 void Game::addPlayer(){
     Player *person = new Player;
-    for(int i = 1; i <= numPlayers; i++){
+    for(int i = 1; i <= PlayerList->size(); i++){
 
         char correct = false;
         while(correct != true) {                    //allows user to correct name and buy in amount
@@ -233,7 +257,7 @@ void Game::printPlayer(){
 void Game::optionsMenu() {
     bool endGame = false;
     bool cardsDealt = false;
-    Dealer *Bob = new Dealer;
+    Dealer *Bob = new Dealer("bob", 999999);
     int num;
     do{
         cout << "Please choose an option from the game menu: " << endl;
@@ -269,41 +293,46 @@ void Game::optionsMenu() {
 //void Game::setNumPlayers(int num) {
 //    this->numPlayers = num;
 //}
+void Game::addMoney(string name, int num) {
+  Node<Player>* curr;
+  curr = PlayerList->begin();      //bypass dealer
+  for(int i = 0; i < PlayerList->size(); i++) {
+    if(curr->getVal().getPlayerName() == name){
+      curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()+num);
+    }
+    curr = curr->getNextNode();
+  }
+}
+void Game::subMoney(string name, int num) {
+  Node<Player>* curr;
+  curr = PlayerList->begin();      //bypass dealer
+  for(int i = 0; i < PlayerList->size(); i++) {
+    if(curr->getVal().getPlayerName() == name){
+      curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()-num);
+    }
+    curr = curr->getNextNode();
+  }
+}
+void Game::dealCard() {                                   //deals one card to each person first then again for a total of two.
+  Node<Card> *topOfDeck = shoe->Cards->begin();                 //pointer to top of deck
+  for(int i = 0; i < 2; i++){
+    auto curr = PlayerList->begin();           //pointer to dealer and player
+    Node<Card> *hand = shoe->Cards->begin();                   //pointer to a players hand
+    for(int j = 0; i <PlayerList->size(); i++){
+      cout << "top of Deck: " << topOfDeck->getVal().getSuit() << " " << topOfDeck->getVal().getSymbol() << " " << topOfDeck->getVal().getValue() << endl;
+
+      //Hand->addNode(reference to card??);
+      curr = curr->getNextNode();                     //next player
+      topOfDeck = topOfDeck->getNextNode();           //next card
+    }
+  }
+}
 
 ///////////////////////////
 /* Dealer Class Functions */
 /////////////////////////
-void Dealer::addMoney(string name, int num) {
-    Node<Player>* curr;
-    curr = PlayerList->begin();      //bypass dealer
-    for(int i = 0; i < PlayerList->size(); i++) {
-        if(curr->getVal().getPlayerName() == name){
-            curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()+num);
-        }
-        curr = curr->getNextNode();
-    }
-}
-void Dealer::subMoney(string name, int num) {
-    Node<Player>* curr;
-    curr = PlayerList->begin();      //bypass dealer
-    for(int i = 0; i < PlayerList->size(); i++) {
-        if(curr->getVal().getPlayerName() == name){
-            curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()-num);
-        }
-        curr = curr->getNextNode();
-    }
-}
-void Dealer::dealCard() {                                   //deals one card to each person first then again for a total of two.
-    Node<Card> *topOfDeck = Cards->begin();                 //pointer to top of deck
-    for(int i = 0; i < 2; i++){
-        Node<Player> *curr = PlayerList->begin();           //pointer to dealer and player
-        Node<Card> *hand = Hand->begin();                   //pointer to a players hand
-        for(int j = 0; i <PlayerList->size(); i++){
-            cout << "top of Deck: " << topOfDeck->getVal().getSuit() << " " << topOfDeck->getVal().getSymbol() << " " << topOfDeck->getVal().getValue() << endl;
 
-            //Hand->addNode(reference to card??);
-            curr = curr->getNextNode();                     //next player
-            topOfDeck = topOfDeck->getNextNode();           //next card
-        }
-    }
+Dealer::Dealer(string name, int cashRemaining) {
+  this->playerName = name;
+  this->cashRemaining = cashRemaining;
 }

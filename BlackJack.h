@@ -33,7 +33,7 @@ public:
     string getSymbol(){return this->symbol;}
     int getValue(){return this->value;}
 
-    void setSuit(string suit){this->suit = suit;}
+    void setSuit(string suit){ this->suit = suit;}
     void setSymbol(string symbol){this->symbol = symbol;}
     void setValue(int newVal) {this->value = newVal;}
 };
@@ -56,6 +56,7 @@ public:
     void print();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
     void addCard(Card card);
+    Card getTopCard();
     int size() { return this->Cards->size(); }
 
 };

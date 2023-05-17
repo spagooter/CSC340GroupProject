@@ -131,6 +131,14 @@ void Deck::print() {
   cout << "size: " << this->Cards->size();
 }
 
+Card Deck::getTopCard(){
+    Card top;
+    Node<Card> *curr = Cards->begin();
+    top = curr->getVal();
+    //top = Cards->begin();
+    return top;
+}
+
 ///////////////////////////
 /* Player Class Functions */
 /////////////////////////
@@ -199,13 +207,18 @@ Game::Game(){
 }
 
 void Game::loadGame() {
-    Deck *deckPtr = new Deck("standard");
+    //Deck *deckPtr = new Deck("standard");
+    //deckPtr->shuffle();
     //deckPtr->print();
     PlayerList = new linkedList<Player>();
     int num;
     cout << "Welcome to our BlackJack table." << endl;
     cout << endl << "Enter number of players: (max 5)" << endl;
     cin >> num;
+    numPlayers = num;
+    cout << "Number of players: " << numPlayers << endl;
+    addDealer();
+    addPlayer();
 }
 
 void Game::addDealer(){

@@ -49,8 +49,8 @@ class Deck {
 private:
     const string suits[4] = {"Spades", "Clubs", "Diamonds", "Hearts"};  //declare an array to hold the suits
 protected:
-public:
     linkedList<Card> *Cards;  //deck has a linked list of cards
+public:
     Deck();                   //default constructor
     Deck(string standard);    //this constructor takes a string and initializes a standard deck.
     Deck(string shoe, int numOfDecks);

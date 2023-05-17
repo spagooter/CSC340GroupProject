@@ -128,10 +128,10 @@ Deck::Deck(string shoe, int numOfDecks) {
 }
 
 //this function prints the deck
-void Deck::print() {
+void Deck::deckPrint() {
   Node<Card> *iter = Cards->begin();
   while (iter != nullptr) {
-    cout << iter->getVal().symbol << " of " << iter->getVal().suit << " " << endl;
+    cout << "[" << iter->getVal().symbol << " of " << iter->getVal().suit << "]";
     iter = iter->getNextNode();
   }
 }
@@ -159,6 +159,7 @@ Player::Player() {
     cardsValue = 0;
     //bet = 0;
     Hand = new Deck();
+
 }
 
 string Player::getPlayerName() { return this->playerName; }
@@ -205,9 +206,9 @@ void Player::print() {
 }
 
 void Player::printHand() {
-  this->Hand->print();
-  updateCardsValue();
-  cout << "Value: " << cardsValue << endl;
+    this->Hand->deckPrint();
+  //updateCardsValue();
+  //cout << "Value: " << cardsValue << endl;
 }
 
 void Player::addCardToHand(Card card) {
@@ -221,7 +222,9 @@ Game::Game(){
     dealer = new Dealer("Dealer", 999999);
     PlayerList = new linkedList<Player>();
     shoe = new Deck("shoe", 6);
+    shoe->shuffle();
     shoe2 = new Deck();
+
 }
 
 int Game::getBet(int arrNum) {return this->bet[arrNum];}
@@ -295,6 +298,7 @@ void Game::optionsMenu() {
     bool endGame = false;
     bool betsPlaced = false;
     bool cardsDealt = false;
+    Game *Bob2 = new Game();
     Dealer *Bob = new Dealer("bob", 999999);
     int num;
     do{
@@ -304,7 +308,7 @@ void Game::optionsMenu() {
         }
         //printPlayer();
         if(cardsDealt == true) {
-            printCards();
+            printCards(cardsDealt);
         }
         printPlayer();
         if(betsPlaced == true && cardsDealt == true){
@@ -333,7 +337,7 @@ void Game::optionsMenu() {
             case 1:
                 cout << "Dealing cards..." << endl;
                 if(cardsDealt == false){
-                    //Bob->dealCard();          //card object from top of deck
+                    dealCard();          //card object from top of deck
                     cardsDealt = true;
                 }else{
                     cout << "Cards have already been dealt" << endl;
@@ -349,19 +353,40 @@ void Game::optionsMenu() {
     }while(endGame != true);
 }// end optionsMenu
 
-void Game::printCards() {
+void Game::printCards(bool cardsDealt) {
+    cout << "in printCards()" << endl;
+    bool dealt = cardsDealt;
+//    cout << "dealt printCards: " << dealt << endl;
     Node<Player> *curr = PlayerList->begin();
+//    Node<Card> *cardCurr = shoe->Cards->begin();
+//    Card tempCard;
+//    tempCard = cardCurr->getVal();
     cout << " " << endl;
     cout << "***************************************************" << endl;
     cout << "\t Dealer's Cards: " << endl;
+    cout << "\t"; dealer->printHand(); cout << endl;
     cout << "***************************************************" << endl;
+    //cout << "PlayerLIst size(): " << PlayerList->size() << endl;
     for(int i = 0; i <PlayerList->size();i++){
         cout << "***************************************************" << endl;
-        cout << "\t Player: " << curr->getVal().getPlayerName() << "'s Cards" << endl;
+        cout << "\t Player: " << curr->getVal().getPlayerName() << "'s Cards:" << endl;
+        //curr->getVal().addCardToHand(shoe->getTopCard());
+//        if(dealt == true){
+//            curr->getVal().addCardToHand(tempCard);
+//            //shoe->deckPrint();
+//            cardCurr = cardCurr->getNextNode();
+//            tempCard = cardCurr->getVal();
+//            curr->getVal().addCardToHand(tempCard);
+//            dealt = false;
+//            cout << "dealt: " << dealt << endl;
+//        }
+
+        cout << "\t"; curr->getVal().printHand();  cout << endl;
+        //shoe2->addCard(shoe->pop());
+
+        //cout << " [ "; curr->getVal().printHand();  cout << "]" << endl;
         cout << "***************************************************" << endl;
-        if(i<PlayerList->size()-1){
-            curr = curr->getNextNode();
-        }
+
     }
 }
 
@@ -402,19 +427,29 @@ void Game::subMoney(string name, int num) {
   }
 }
 void Game::dealCard() {                                   //deals one card to each person first then again for a total of two.
-  Node<Card> *topOfDeck = shoe->Cards->begin();                 //pointer to top of deck
-  for(int i = 0; i < 2; i++){
-    auto curr = PlayerList->begin();           //pointer to dealer and player
-    Node<Card> *hand = shoe->Cards->begin();                   //pointer to a players hand
-    for(int j = 0; i <PlayerList->size(); i++){
-      cout << "top of Deck: " << topOfDeck->getVal().getSuit() << " " << topOfDeck->getVal().getSymbol() << " " << topOfDeck->getVal().getValue() << endl;
+    cout << "in dealCard" << endl;
+    Node<Player> *curr = PlayerList->begin();
+    Node<Card> *cardCurr = shoe->Cards->begin();
+    Card tempCard;
+    tempCard = cardCurr->getVal();
+    dealer->addCardToHand(tempCard);
+    cardCurr = cardCurr->getNextNode();
+    tempCard = cardCurr->getVal();
+    dealer->addCardToHand(tempCard);
+    cardCurr = cardCurr->getNextNode();
+    tempCard = cardCurr->getVal();
+    for(int i = 0; i <PlayerList->size();i++) {
+        curr->getVal().addCardToHand(tempCard);
+        cardCurr = cardCurr->getNextNode();
+        tempCard = cardCurr->getVal();
+        curr->getVal().addCardToHand(tempCard);
+        //cout << "\t"; curr->getVal().printHand();  cout << endl;
 
-      //Hand->addNode(reference to card??);
-      curr = curr->getNextNode();                     //next player
-      topOfDeck = topOfDeck->getNextNode();           //next card
+        if(i < PlayerList->size()-1){
+            curr = curr->getNextNode();
+        }
     }
-  }
-}
+}//end dealCard
 
 ///////////////////////////
 /* Dealer Class Functions */
@@ -423,4 +458,13 @@ void Game::dealCard() {                                   //deals one card to ea
 Dealer::Dealer(string name, int cashRemaining) {
   this->playerName = name;
   this->cashRemaining = cashRemaining;
+}
+
+void Dealer::addCardToHand(Card card) {
+    this->Hand->addCard(card);
+}
+void Dealer::printHand() {
+    this->Hand->deckPrint();
+    //updateCardsValue();
+    //cout << "Value: " << cardsValue << endl;
 }

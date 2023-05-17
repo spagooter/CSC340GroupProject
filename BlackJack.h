@@ -54,7 +54,7 @@ public:
     Deck();                   //default constructor
     Deck(string standard);    //this constructor takes a string and initializes a standard deck.
     Deck(string shoe, int numOfDecks);
-    void print();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
+    void deckPrint();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
     void addCard(Card card);
     Card getTopCard();
@@ -72,7 +72,6 @@ protected:
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
     Deck *Hand; //linked list of cards
-    //int bet[5] = {0,0,0,0,0};
 public:
     /* constructors */
     Player();
@@ -82,7 +81,6 @@ public:
     int getNumCards();
     int getCardsValue();
     int getCashRemaining();
-    //int getBet(int arrNum);
 
     //************************** setters *********************************
     void setPlayerName(int i);
@@ -91,7 +89,6 @@ public:
     void setCashRemaining(int num);
     void setCashRemaining();
     void updateCardsValue();
-    //void setBet(int arrNum, int bet);
     void print();
     void printHand();
     void addCardToHand(Card card);
@@ -107,6 +104,8 @@ class Dealer: protected Player{           //need access to PlayerList LL and Dec
 private:
 public:
     Dealer(string name, int cashRemaining);
+    void addCardToHand(Card card);
+    void printHand();
 };
 
 /////////////////
@@ -117,6 +116,7 @@ class Game{                               //inherits from deck class
 protected:
     Dealer* dealer;                       //this will be the dealer for the game
     linkedList<Player> *PlayerList;       //linked list of cards                      //needed for forloop to add players while LL size is 0.
+
     Deck* shoe;                           //this is where we draw cards from
     Deck* shoe2;                          //this is where the cards go to
     int bet[5] = {0,0,0,0,0};
@@ -133,7 +133,7 @@ public:
     int getBet(int arrNum);
     void setBet(int arrNum, int bet);
     void placeBets();
-    void printCards();
+    void printCards(bool cardsDealt);
 
 //    void setNumPlayers(int num);
 };//end Player class

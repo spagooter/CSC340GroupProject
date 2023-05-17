@@ -7,9 +7,9 @@ using namespace std;
 int main() {
 //  Deck deck1("standard");
 //  deck1.shuffle();
-  //deck1.print();
+//  deck1.deckPrint();
   //player1->Hand->Cards->remove(*card1);
-  cout << "test" << endl;
+//  cout << "test" << endl;
   Game *startGame = new Game();
   startGame->loadGame();
   startGame->optionsMenu();

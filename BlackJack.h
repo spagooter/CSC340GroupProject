@@ -72,6 +72,7 @@ protected:
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
     Deck *Hand; //linked list of cards
+    //int bet[5] = {0,0,0,0,0};
 public:
     /* constructors */
     Player();
@@ -81,6 +82,7 @@ public:
     int getNumCards();
     int getCardsValue();
     int getCashRemaining();
+    //int getBet(int arrNum);
 
     //************************** setters *********************************
     void setPlayerName(int i);
@@ -89,10 +91,11 @@ public:
     void setCashRemaining(int num);
     void setCashRemaining();
     void updateCardsValue();
+    //void setBet(int arrNum, int bet);
     void print();
     void printHand();
     void addCardToHand(Card card);
-
+    //void setBet(int num);
     //void hit();
     //void stand();
 };
@@ -112,20 +115,26 @@ public:
 class Game{                               //inherits from deck class
     friend class Dealer;
 protected:
-    Dealer* dealer = nullptr;                       //this will be the dealer for the game
-    linkedList<Player> *PlayerList = nullptr;       //linked list of cards                      //needed for forloop to add players while LL size is 0.
-    Deck* shoe = nullptr;                           //this is where we draw cards from
-    Deck* shoe2 = nullptr;                          //this is where the cards go to
+    Dealer* dealer;                       //this will be the dealer for the game
+    linkedList<Player> *PlayerList;       //linked list of cards                      //needed for forloop to add players while LL size is 0.
+    Deck* shoe;                           //this is where we draw cards from
+    Deck* shoe2;                          //this is where the cards go to
+    int bet[5] = {0,0,0,0,0};
 public:
     Game();                               //default constructor
     void loadGame();
     void addDealer();
-    void addPlayer();
+    void addPlayer(int num);
     void printPlayer();
     void optionsMenu();
     void addMoney(string name, int num);
     void subMoney(string name, int num);
     void dealCard();
+    int getBet(int arrNum);
+    void setBet(int arrNum, int bet);
+    void placeBets();
+    void printCards();
+
 //    void setNumPlayers(int num);
 };//end Player class
 

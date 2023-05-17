@@ -65,7 +65,7 @@ public:
 template <typename T>
 void linkedList<T>::remove(T data) {
   auto iter = this->find(data);
-  remove(iter);
+  removeNode(iter );
 }
 
 template <typename T>

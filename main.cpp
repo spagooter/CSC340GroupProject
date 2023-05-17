@@ -11,7 +11,7 @@ int main() {
   player1->print();
   player1->Hand->addCard(*card1);
   player1->Hand->addCard(*card2);
-
+  player1->Hand->Cards->remove(*card1);
   player1->updateCardsValue();
   cout << player1->getCardsValue();
 }

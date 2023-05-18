@@ -119,7 +119,7 @@ protected:
 
     Deck* shoe;                           //this is where we draw cards from
     Deck* shoe2;                          //this is where the cards go to
-    int bet[5] = {0,0,0,0,0};
+    int bet[5] = {0,0,0,0,0}; //bets from each player
 public:
     Game();                               //default constructor
     void loadGame();
@@ -129,11 +129,12 @@ public:
     void optionsMenu();
     void addMoney(string name, int num);
     void subMoney(string name, int num);
-    void dealCard();
+    void dealInitialCards();
+    void hit(int currCardIndex, bool playerPass);
     int getBet(int arrNum);
     void setBet(int arrNum, int bet);
     void placeBets();
-    void printCards(bool cardsDealt);
+    void printCards();
 
 //    void setNumPlayers(int num);
 };//end Player class

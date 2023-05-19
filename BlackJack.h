@@ -74,7 +74,9 @@ protected:
     string playerName;      //player name
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
+    int playerBet;
     Deck *Hand; //linked list of cards
+
 
 public:
     /* constructors */
@@ -85,6 +87,7 @@ public:
     int getNumCards();
     int getCardsValue();
     int getCashRemaining();
+    int getBet();
 
     //************************** setters *********************************
     void setPlayerName(int i);
@@ -92,6 +95,8 @@ public:
     void setNumCards(int num);
     void setCashRemaining(int num);
     void setCashRemaining();
+    void setBet(int num);
+
     void updateCardsValue();
     void print();
     void printHand();
@@ -132,12 +137,11 @@ public:
     void subMoney(string name, int num);
     void dealInitialCards();
     void hit(int currCardIndex, bool playerPass);
-    int getBet(int arrNum);
-    void setBet(int arrNum, int bet);
     void placeBets();
     void printCards(bool cardsDealt);
     void clearTable();
     void printCards();
+    void checkCardValues();
 
 //    void setNumPlayers(int num);
 };//end Player class

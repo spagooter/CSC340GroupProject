@@ -144,6 +144,10 @@ Card Deck::getTopCard(){
     return top;
 }
 
+Card Deck::pop(){
+  return this->Cards->pop();
+}
+
 ///////////////////////////
 /* Player Class Functions */
 /////////////////////////
@@ -451,6 +455,13 @@ void Game::dealCard() {                                   //deals one card to ea
     }
 }//end dealCard
 
+void Game::clearTable(){
+  shoe2->Cards->join(shoe2->Cards->begin(), *this->dealer->Hand->Cards);
+  for (auto iter = PlayerList->begin(); iter != nullptr; iter = iter->getNextNode()){
+    shoe2->Cards->join(shoe2->Cards->begin(), *iter->getVal().Hand->Cards);
+  }
+}
+
 ///////////////////////////
 /* Dealer Class Functions */
 /////////////////////////
@@ -458,13 +469,4 @@ void Game::dealCard() {                                   //deals one card to ea
 Dealer::Dealer(string name, int cashRemaining) {
   this->playerName = name;
   this->cashRemaining = cashRemaining;
-}
-
-void Dealer::addCardToHand(Card card) {
-    this->Hand->addCard(card);
-}
-void Dealer::printHand() {
-    this->Hand->deckPrint();
-    //updateCardsValue();
-    //cout << "Value: " << cardsValue << endl;
 }

@@ -59,6 +59,8 @@ public:
     void addCard(Card card);
     Card getTopCard();
     int size() { return this->Cards->size(); }
+    Card pop();
+
 
 };
 
@@ -67,11 +69,13 @@ public:
 ///////////////
 class Player {
     friend class Deck;
+    friend class Game;
 protected:
     string playerName;      //player name
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
     Deck *Hand; //linked list of cards
+
 public:
     /* constructors */
     Player();
@@ -100,12 +104,10 @@ public:
 /////////////////
 /* Dealer Class */
 ///////////////
-class Dealer: protected Player{           //need access to PlayerList LL and Deck LL??
+class Dealer: public Player{           //need access to PlayerList LL and Deck LL??
 private:
 public:
     Dealer(string name, int cashRemaining);
-    void addCardToHand(Card card);
-    void printHand();
 };
 
 /////////////////
@@ -134,6 +136,7 @@ public:
     void setBet(int arrNum, int bet);
     void placeBets();
     void printCards(bool cardsDealt);
+    void clearTable();
 
 //    void setNumPlayers(int num);
 };//end Player class

@@ -211,8 +211,14 @@ void Player::print() {
 
 void Player::printHand() {
     this->Hand->deckPrint();
-  //updateCardsValue();
-  //cout << "Value: " << cardsValue << endl;
+  updateCardsValue();
+  cout << " " << endl;
+  cout << "\tValue: " << cardsValue;
+  if(cardsValue > 21){
+      cout << " Bust!: You Lose." << endl;
+  }else if(cardsValue == 21){
+      cout << " You Win." << endl;
+  }
 }
 
 void Player::addCardToHand(Card card) {
@@ -235,10 +241,6 @@ int Game::getBet(int arrNum) {return this->bet[arrNum];}
 void Game::setBet(int arrNum, int bet) {this->bet[arrNum] = bet;}
 
 void Game::loadGame() {
-    //Deck *deckPtr = new Deck("standard");
-    //deckPtr->shuffle();
-    //deckPtr->print();
-    //PlayerList = new linkedList<Player>();
     int num;
     cout << "Welcome to our BlackJack table." << endl;
     cout << endl << "Enter number of players: (max 5)" << endl;
@@ -246,20 +248,11 @@ void Game::loadGame() {
     addPlayer(num);
 }
 
-//void Game::addDealer(){
-//    Player *person = new Player;
-//    person->setPlayerName("Dealer");
-//    person->setCashRemaining(10000000);     //ten million dollars
-//    cout <<  "\nDealer: Hello my name is Bob. Welcome to my table.\n\nWhat are your names?" << endl;
-//    //cout << "Dealer: " << person->getPlayerName() << " cash remaining: " << person->getCashRemaining() << endl;
-//    PlayerList->addNode(*person);
-//}
-
 void Game::addPlayer(int num){
     Player *person = new Player;
     for(int i = 1; i <= num; i++){
 
-        char correct = false;
+        char correct = false;                       //checks if input is correct
         while(correct != true) {                    //allows user to correct name and buy in amount
             person->setPlayerName(i);
             person->setCashRemaining();
@@ -267,7 +260,7 @@ void Game::addPlayer(int num){
             cout << "Is this correct? Y/N" << endl;
             cin >> correct;
             if (correct == 'Y' || correct == 'y') {
-                PlayerList->addNode(*person);
+                PlayerList->addNode(*person);   //adds person object to playerlist
                 correct = true;
             } else {
                 cout << "Please enter the correct info." << endl;
@@ -277,7 +270,7 @@ void Game::addPlayer(int num){
     printPlayer();
 }// end addPlayer
 
-void Game::printPlayer(){
+void Game::printPlayer(){       //prints the players after player names, buy in amount and bet amount.
     Node<Player>* curr;
     curr = PlayerList->begin();      //bypass dealer
     cout << "***************************************************" << endl;
@@ -288,49 +281,56 @@ void Game::printPlayer(){
         if(i < PlayerList->size()-1){
             //cout << "curr->next" << endl;
             curr = curr->getNextNode();
-
         }
-
     }
     cout << "Dealer: Buy in complete. Good Luck." << endl;
 
     cout << "***************************************************" << endl;
-
 }//end printPlayer()
 
 void Game::optionsMenu() {
-    bool endGame = false;
-    bool betsPlaced = false;
-    bool cardsDealt = false;
-    Game *Bob2 = new Game();
-    Dealer *Bob = new Dealer("bob", 999999);
-    int num;
+    bool endGame = false;               //ends while loop
+    bool betsPlaced = false;            //
+    bool cardsDealt = false;            //
+    bool playerPass = false;            //if player stays, dealers turn
+    int num;                            //input for options menu
+    int currCardIndex = 0;              //keeps track of next card not yet dealt
     do{
-        if(cardsDealt == false){
+        if(cardsDealt == false){        //bets must be placed before dealing cards
             placeBets();
             betsPlaced = true;
         }
-        //printPlayer();
-        if(cardsDealt == true) {
-            printCards(cardsDealt);
+        if(cardsDealt == true) {        //show cards once cards are dealt
+            printCards();
         }
-        printPlayer();
+        printPlayer();                  //show players name, buy in, and bet amount
         if(betsPlaced == true && cardsDealt == true){
-            Node<Player> *curr = PlayerList->begin();
-            for(int i = 0; i < PlayerList->size();i++){
+            if(playerPass == false) {
+                Node<Player> *curr = PlayerList->begin();
+                for (int i = 0; i < PlayerList->size(); i++) {
+                    cout << "***************************************************" << endl;
+                    cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
+                         << endl;
+                    cout << "***************************************************" << endl;
+                    //cout << "playerPass: " << playerPass << endl;
+                    if (i < PlayerList->size() - 1) {
+                        curr = curr->getNextNode();
+                    }
+                }//end for
+            }//end if
+            if(playerPass == true){
                 cout << "***************************************************" << endl;
-                cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay" << endl;
+                cout << "Player: Dealer's Turn. (Must hit until value >= 17)"
+                     << endl;
                 cout << "***************************************************" << endl;
-                if(i < PlayerList->size()-1){
-                    curr = curr->getNextNode();
-                }
             }
-        }
+        }//end if
         cout << "Please choose an option from the game menu: " << endl;
         cout << "Option 0: End the Game" << endl;
         cout << "Option 1: Deal the cards" << endl;
         cout << "Option 2: Hit" << endl;
         cout << "Option 3: Stay" << endl;
+        cout << "Option 4: New game" << endl;
         cout << " " << endl;
         cin >> num;
         switch(num){
@@ -341,7 +341,8 @@ void Game::optionsMenu() {
             case 1:
                 cout << "Dealing cards..." << endl;
                 if(cardsDealt == false){
-                    dealCard();          //card object from top of deck
+                    dealInitialCards();                 //gives two cards to dealer and player (deal 4 cards)
+                    currCardIndex = currCardIndex + 4;  //keeps track of what card is next in Deck (index + 4)
                     cardsDealt = true;
                 }else{
                     cout << "Cards have already been dealt" << endl;
@@ -349,67 +350,49 @@ void Game::optionsMenu() {
                 break;
             case 2:
                 cout << "Hit" << endl;      //hit
+                hit(currCardIndex, playerPass);                 //sends card index to hit function (deal 1 card)
+                currCardIndex = currCardIndex + 1;  //Deck index + 1 for next card
                 break;
             case 3:
                 cout << "Stay" << endl;      //stay
+                playerPass = true;
+                break;
+            case 4:
+                cout << "New game" << endl;
                 break;
         }// end switch
     }while(endGame != true);
 }// end optionsMenu
 
-void Game::printCards(bool cardsDealt) {
-    cout << "in printCards()" << endl;
-    bool dealt = cardsDealt;
-//    cout << "dealt printCards: " << dealt << endl;
+void Game::printCards() {
+    //bool dealt = cardsDealt;
     Node<Player> *curr = PlayerList->begin();
-//    Node<Card> *cardCurr = shoe->Cards->begin();
-//    Card tempCard;
-//    tempCard = cardCurr->getVal();
     cout << " " << endl;
     cout << "***************************************************" << endl;
     cout << "\t Dealer's Cards: " << endl;
     cout << "\t"; dealer->printHand(); cout << endl;
     cout << "***************************************************" << endl;
-    //cout << "PlayerLIst size(): " << PlayerList->size() << endl;
     for(int i = 0; i <PlayerList->size();i++){
         cout << "***************************************************" << endl;
         cout << "\t Player: " << curr->getVal().getPlayerName() << "'s Cards:" << endl;
-        //curr->getVal().addCardToHand(shoe->getTopCard());
-//        if(dealt == true){
-//            curr->getVal().addCardToHand(tempCard);
-//            //shoe->deckPrint();
-//            cardCurr = cardCurr->getNextNode();
-//            tempCard = cardCurr->getVal();
-//            curr->getVal().addCardToHand(tempCard);
-//            dealt = false;
-//            cout << "dealt: " << dealt << endl;
-//        }
-
         cout << "\t"; curr->getVal().printHand();  cout << endl;
-        //shoe2->addCard(shoe->pop());
-
-        //cout << " [ "; curr->getVal().printHand();  cout << "]" << endl;
         cout << "***************************************************" << endl;
-
     }
 }
 
-void Game::placeBets() {
+void Game::placeBets() {        //takes in bet.
     Node<Player> *curr = PlayerList->begin();
     int bet = 0;
     for(int i = 0; i <PlayerList->size();i++){
         cout << "Player: " << curr->getVal().getPlayerName() << " bet: " << endl;
         cin >> bet;
-        setBet(i, bet);
-        if(i < PlayerList->size()-1){
+        setBet(i, bet);         //stores bet in Game class protected data member
+        if(i < PlayerList->size()-1){   //stops for loop from going out of range
             curr = curr->getNextNode();
         }
     }
 }
 
-//void Game::setNumPlayers(int num) {
-//    this->numPlayers = num;
-//}
 void Game::addMoney(string name, int num) {
   Node<Player>* curr;
   curr = PlayerList->begin();      //bypass dealer
@@ -417,7 +400,9 @@ void Game::addMoney(string name, int num) {
     if(curr->getVal().getPlayerName() == name){
       curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()+num);
     }
-    curr = curr->getNextNode();
+    if(i < PlayerList->size()-1){   //stops for loop from going out of range
+        curr = curr->getNextNode();
+    }
   }
 }
 void Game::subMoney(string name, int num) {
@@ -427,28 +412,56 @@ void Game::subMoney(string name, int num) {
     if(curr->getVal().getPlayerName() == name){
       curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()-num);
     }
-    curr = curr->getNextNode();
+    if(i < PlayerList->size()-1){   //stops for loop from going out of range
+        curr = curr->getNextNode();
+    }
   }
 }
-void Game::dealCard() {                                   //deals one card to each person first then again for a total of two.
-    cout << "in dealCard" << endl;
-    Node<Player> *curr = PlayerList->begin();
-    Node<Card> *cardCurr = shoe->Cards->begin();
-    Card tempCard;
-    tempCard = cardCurr->getVal();
-    dealer->addCardToHand(tempCard);
-    cardCurr = cardCurr->getNextNode();
-    tempCard = cardCurr->getVal();
-    dealer->addCardToHand(tempCard);
-    cardCurr = cardCurr->getNextNode();
-    tempCard = cardCurr->getVal();
-    for(int i = 0; i <PlayerList->size();i++) {
-        curr->getVal().addCardToHand(tempCard);
-        cardCurr = cardCurr->getNextNode();
-        tempCard = cardCurr->getVal();
-        curr->getVal().addCardToHand(tempCard);
-        //cout << "\t"; curr->getVal().printHand();  cout << endl;
 
+void Game::hit(int currCardIndex, bool playerPass){
+    if(playerPass == false) {                               //player is hitting
+        Node<Player> *curr = PlayerList->begin();
+        Node<Card> *cardCurr = shoe->Cards->begin();
+        for (int i = 0; i < currCardIndex; i++) {            //loops through deck to current index(card not dealt)
+            cardCurr = cardCurr->getNextNode();
+        }
+        Card tempCard;
+        tempCard = cardCurr->getVal();
+        for (int i = 0; i < PlayerList->size(); i++) {
+            curr->getVal().addCardToHand(tempCard);     //adds next card to hand
+            if (i < PlayerList->size() - 1) {
+                curr = curr->getNextNode();
+            }
+        }//end for
+    }
+    if(playerPass == true){                                 //dealer hitting
+        Node<Card> *cardCurr = shoe->Cards->begin();
+        for (int i = 0; i < currCardIndex; i++) {            //loops through deck to current index(card not dealt)
+            cardCurr = cardCurr->getNextNode();
+        }
+        Card tempCard;
+        tempCard = cardCurr->getVal();
+        dealer->addCardToHand(tempCard);
+    }
+}//end hit
+void Game::dealInitialCards() {             //deals one card to each person first then again for a total of two.
+                                            //currently only dealing to two players(dealer and player 1)
+    Node<Player> *curr = PlayerList->begin();                   //curr points to players in LL
+    Node<Card> *cardCurr = shoe->Cards->begin();                //cardCurr points to a card on the deck
+    Card tempCard;                                              //temporary Card object to hold card values
+    tempCard = cardCurr->getVal();                              //assigns currCard data members to tempCard
+    dealer->addCardToHand(tempCard);                       //adds a card to dealers hand
+    cardCurr = cardCurr->getNextNode();                         //points to next card on the deck
+    tempCard = cardCurr->getVal();                              //assigns currCard data member to tempCard
+    dealer->addCardToHand(tempCard);                       //adds another card to dealers hand
+    cardCurr = cardCurr->getNextNode();                         //points to next card on the deck
+    tempCard = cardCurr->getVal();                              //assigns currCard data member to tempCard
+    for(int i = 0; i <PlayerList->size();i++) {
+        curr->getVal().addCardToHand(tempCard);            //adds a card to the players hand
+        cardCurr = cardCurr->getNextNode();                     //points to next card on the deck
+        tempCard = cardCurr->getVal();                          //assigns currCard data member to tempCard
+        curr->getVal().addCardToHand(tempCard);            //adds another card to the players hand
+        //cout << "\t"; curr->getVal().printHand();  cout << endl;
         if(i < PlayerList->size()-1){
             curr = curr->getNextNode();
         }

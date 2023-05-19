@@ -60,7 +60,7 @@ public:
     Card getTopCard();
     int size() { return this->Cards->size(); }
     Card pop();
-
+    void join(Deck& other);
 
 };
 
@@ -125,7 +125,6 @@ protected:
 public:
     Game();                               //default constructor
     void loadGame();
-    void addDealer();
     void addPlayer(int num);
     void printPlayer();
     void optionsMenu();

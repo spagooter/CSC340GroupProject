@@ -136,7 +136,7 @@ void Deck::deckPrint() {
   }
 }
 
-Card Deck::getTopCard(){
+Card Deck::getTopCard() {
     Card top;
     Node<Card> *curr = Cards->begin();
     top = curr->getVal();
@@ -144,8 +144,12 @@ Card Deck::getTopCard(){
     return top;
 }
 
-Card Deck::pop(){
+Card Deck::pop() {
   return this->Cards->pop();
+}
+
+void Deck::join(Deck& other) {
+  this->Cards->join(this->Cards->begin(), *other.Cards);
 }
 
 ///////////////////////////
@@ -444,29 +448,15 @@ void Game::hit(int currCardIndex, bool playerPass){
         dealer->addCardToHand(tempCard);
     }
 }//end hit
-void Game::dealInitialCards() {             //deals one card to each person first then again for a total of two.
-                                            //currently only dealing to two players(dealer and player 1)
-    Node<Player> *curr = PlayerList->begin();                   //curr points to players in LL
-    Node<Card> *cardCurr = shoe->Cards->begin();                //cardCurr points to a card on the deck
-    Card tempCard;                                              //temporary Card object to hold card values
-    tempCard = cardCurr->getVal();                              //assigns currCard data members to tempCard
-    dealer->addCardToHand(tempCard);                       //adds a card to dealers hand
-    cardCurr = cardCurr->getNextNode();                         //points to next card on the deck
-    tempCard = cardCurr->getVal();                              //assigns currCard data member to tempCard
-    dealer->addCardToHand(tempCard);                       //adds another card to dealers hand
-    cardCurr = cardCurr->getNextNode();                         //points to next card on the deck
-    tempCard = cardCurr->getVal();                              //assigns currCard data member to tempCard
-    for(int i = 0; i <PlayerList->size();i++) {
-        curr->getVal().addCardToHand(tempCard);            //adds a card to the players hand
-        cardCurr = cardCurr->getNextNode();                     //points to next card on the deck
-        tempCard = cardCurr->getVal();                          //assigns currCard data member to tempCard
-        curr->getVal().addCardToHand(tempCard);            //adds another card to the players hand
-        //cout << "\t"; curr->getVal().printHand();  cout << endl;
-        if(i < PlayerList->size()-1){
-            curr = curr->getNextNode();
-        }
+
+void Game::dealInitialCards(){
+  for (int i = 0; i < 2; ++i) {
+    dealer->addCardToHand(shoe->pop());
+    for (auto iter = PlayerList->begin(); iter != nullptr; iter = iter->getNextNode()){
+      iter->getVal().addCardToHand(shoe->pop());
     }
-}//end dealCard
+  }
+}
 
 void Game::clearTable(){
   shoe2->Cards->join(shoe2->Cards->begin(), *this->dealer->Hand->Cards);

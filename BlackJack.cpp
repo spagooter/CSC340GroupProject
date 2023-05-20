@@ -410,7 +410,8 @@ void Game::printCards() {
     cout << "\t Dealer's Cards: " << endl;
     cout << "\t"; dealer->printHand(); cout << endl;
     cout << "***************************************************" << endl;
-    for(int i = 0; i <PlayerList->size();i++){
+    for (auto curr = PlayerList->begin(); curr != nullptr; curr = curr->getNextNode()){
+    //for(int i = 0; i <PlayerList->size();i++){
         cout << "***************************************************" << endl;
         cout << "\t Player: " << curr->getVal().getPlayerName() << "'s Cards:" << endl;
         cout << "\t"; curr->getVal().printHand();  cout << endl;

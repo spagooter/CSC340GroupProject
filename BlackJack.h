@@ -87,7 +87,7 @@ public:
     int getNumCards();
     int getCardsValue();
     int getCashRemaining();
-    int getBet();
+    //int getBet();
 
     //************************** setters *********************************
     void setPlayerName(int i);
@@ -95,7 +95,7 @@ public:
     void setNumCards(int num);
     void setCashRemaining(int num);
     void setCashRemaining();
-    void setBet(int num);
+    //void setBet(int num);
 
     void updateCardsValue();
     void print();
@@ -127,6 +127,7 @@ protected:
     Deck* shoe;                           //this is where we draw cards from
     Deck* shoe2;                          //this is where the cards go to
     int bet[5] = {0,0,0,0,0}; //bets from each player
+    int turn[5] = {1,0,0,0,0};
 public:
     Game();                               //default constructor
     void loadGame();
@@ -142,6 +143,10 @@ public:
     void clearTable();
     void printCards();
     void checkCardValues();
+    int getTurn(int playerNum);
+    void setTurn(int arr, int num);
+    int getBet(int num);
+    void setBet(int arr, int num);
 
 //    void setNumPlayers(int num);
 };//end Player class

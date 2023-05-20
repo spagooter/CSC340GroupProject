@@ -179,7 +179,7 @@ int Player::getCardsValue() {
   return this->cardsValue;
 }
 int Player::getCashRemaining() { return this->cashRemaining; }
-int Player::getBet(){return this->playerBet;}
+//int Player::getBet(){return this->playerBet;}
 
 void Player::setPlayerName(int i) {
     cout << "Enter Player" << i << "'s name: ";
@@ -196,7 +196,7 @@ void Player::setCashRemaining() {
     this->cashRemaining = buyIn;
 }
 
-void Player::setBet(int num) {this->playerBet = num;}
+//void Player::setBet(int num) {this->playerBet = num;}
 
 void Player::updateCardsValue() {
   int sum = 0;
@@ -241,7 +241,6 @@ Game::Game(){
     shoe = new Deck("shoe", 6);
     shoe->shuffle();
     shoe2 = new Deck();
-
 }
 
 void Game::loadGame() {
@@ -281,7 +280,7 @@ void Game::printPlayer(){       //prints the players after player names, buy in 
     for(int i = 0; i < PlayerList->size(); i++) {
         cout << "Player Name: " << curr->getVal().getPlayerName();
         cout << "\t Buy in: " << curr->getVal().getCashRemaining();
-        cout << "\t Bet: " << curr->getVal().getBet() << endl;
+        cout << "\t Bet: " << getBet(i) << endl;
         if(i < PlayerList->size()-1){
             //cout << "curr->next" << endl;
             curr = curr->getNextNode();
@@ -292,29 +291,40 @@ void Game::printPlayer(){       //prints the players after player names, buy in 
     cout << "***************************************************" << endl;
 }//end printPlayer()
 
+int Game::getTurn(int playerNum){
+    return this->turn[playerNum];
+}
+void Game::setTurn(int arr, int num){
+    this->turn[arr] = num;
+}
+int Game::getBet(int num){return this->bet[num];}
+void Game::setBet(int arr, int num){this->bet[arr] = num;}
+
+
 void Game::optionsMenu() {
     bool endGame = false;               //ends while loop
     bool betsPlaced = false;            //
     bool cardsDealt = false;            //
-    bool playersTurn = true;
+    //bool playersTurn = true;
     bool playerStay = false;            //if player stays, dealers turn
     bool dealersTurn = false;
     int num;                            //input for options menu
+    int playerTurn = 1;
     int currCardIndex = 0;              //keeps track of next card not yet dealt
     do{
         if(cardsDealt == false){        //bets must be placed before dealing cards
-            placeBets();
+            placeBets();                //takes in bet
             betsPlaced = true;
         }
         if(cardsDealt == true) {        //show cards once cards are dealt
-            printCards();
-            checkCardValues();
+            printCards();               //prints hand of player
+            checkCardValues();          //checks the value of players hand, if >21 sub bet from buy in
         }
-        printPlayer();                  //show players name, buy in, and bet amount
+        printPlayer();                  //shows players name, buy in and bet
         if(betsPlaced == true && cardsDealt == true){
             if(playerStay == false) {
                 Node<Player> *curr = PlayerList->begin();
-                for (int i = 0; i < PlayerList->size(); i++) {
+                for (int i = 0; i < playerTurn; i++) {
                     cout << "***************************************************" << endl;
                     cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
                          << endl;
@@ -361,11 +371,12 @@ void Game::optionsMenu() {
                 break;
             case 3:
                 cout << "Stay" << endl;      //stay
-                if(playersTurn == true){
-                    playerStay = true;
-                    playersTurn = false;
-                    dealersTurn = true;
-                }
+                    playerTurn = playerTurn + 1;
+                    if(playerTurn == PlayerList->size() && playerStay == true){
+                        dealersTurn = true;
+                    }
+
+
                 if(dealersTurn = true){
                     //checkCardValues();
                 }
@@ -385,7 +396,7 @@ void Game::optionsMenu() {
 void Game::checkCardValues() {
     for (auto iter = PlayerList->begin(); iter != nullptr; iter = iter->getNextNode()){
         if(iter->getVal().getCardsValue() > 21){
-            subMoney(iter->getVal().getPlayerName(), iter->getVal().getBet());
+            //subMoney(iter->getVal().getPlayerName(), iter->getVal().getBet());
         }
 
         //iter->getVal().addCardToHand(shoe->pop());
@@ -413,8 +424,9 @@ void Game::placeBets() {        //takes in bet.
     for(int i = 0; i <PlayerList->size();i++){
         cout << "Player: " << curr->getVal().getPlayerName() << " bet: " << endl;
         cin >> bet;
-        curr->getVal().setBet(bet);     //stores bet in protected player data member: playerBet
-        cout << "current bet: " <<  curr->getVal().getBet() << endl;
+        setBet(i, bet);
+        //curr->setVal();     //stores bet in protected player data member: playerBet
+        //cout << "current bet: " <<  curr->getVal().getBet() << endl;
         //setBet(i, bet);
         if(i < PlayerList->size()-1){       //stops for loop from going out of range
             curr = curr->getNextNode();

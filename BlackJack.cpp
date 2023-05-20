@@ -136,14 +136,6 @@ void Deck::deckPrint() {
   }
 }
 
-Card Deck::getTopCard() {
-    Card top;
-    Node<Card> *curr = Cards->begin();
-    top = curr->getVal();
-    //top = Cards->begin();
-    return top;
-}
-
 Card Deck::pop() {
   return this->Cards->pop();
 }
@@ -165,7 +157,6 @@ Player::Player(string name, int cashRemaining) {
 Player::Player() {
     playerName = "";
     cardsValue = 0;
-    playerBet = 0;
     Hand = new Deck();
 
 }
@@ -173,13 +164,10 @@ Player::Player() {
 string Player::getPlayerName() { return this->playerName; }
 int Player::getNumCards() { return this->Hand->size(); }
 int Player::getCardsValue() {
-  if (this->Hand->size() == 0)
-    this->cardsValue = 0;
-
+  updateCardsValue();
   return this->cardsValue;
 }
 int Player::getCashRemaining() { return this->cashRemaining; }
-//int Player::getBet(){return this->playerBet;}
 
 void Player::setPlayerName(int i) {
     cout << "Enter Player" << i << "'s name: ";
@@ -246,25 +234,28 @@ Game::Game(){
 void Game::loadGame() {
     int num;
     cout << "Welcome to our BlackJack table." << endl;
-    cout << endl << "Enter number of players: (max 5)" << endl;
+    cout << "Enter number of players (max 5): ";
     cin >> num;
-    addPlayer(num);
+    addPlayers(num);
 }
 
-void Game::addPlayer(int num){
-    Player *person = new Player;
-    for(int i = 1; i <= num; i++){
-
-        char correct = false;                       //checks if input is correct
-        while(correct != true) {                    //allows user to correct name and buy in amount
-            person->setPlayerName(i);
-            person->setCashRemaining();
-            cout << "Player name: " << person->getPlayerName() << " Player buy in: " << person->getCashRemaining() << endl;
+void Game::addPlayers(int num){
+    Player *person;
+    string name;
+    int buyIn;
+    char correct = 'N';
+    for(int i = 1; i <= num; ++i){                       //checks if input is correct
+        while(toupper(correct) != 'Y') {                    //allows user to correct name and buy in amount
+            cout << "Enter Player " << i << "'s name: ";
+            cin >> name;
+            cout << "Enter Player " << i << "'s Buy-in: ";
+            cin >> buyIn;
+            person = new Player(name, buyIn);
+            cout << "Name: " << person->getPlayerName() << ", Buy-in: " << person->getCashRemaining() << endl;
             cout << "Is this correct? Y/N" << endl;
             cin >> correct;
-            if (correct == 'Y' || correct == 'y') {
+            if (toupper(correct) == 'Y') {
                 PlayerList->addNode(*person);   //adds person object to playerlist
-                correct = true;
             } else {
                 cout << "Please enter the correct info." << endl;
             }
@@ -456,10 +447,11 @@ void Game::addMoney(string name, int num) {
       curr->getVal().setCashRemaining(curr->getVal().getCashRemaining()+num);
     }
     if(i < PlayerList->size()-1){   //stops for loop from going out of range
-        curr = curr->getNextNode();
+      curr = curr->getNextNode();
     }
   }
 }
+
 void Game::subMoney(string name, int num) {
   Node<Player>* curr;
   curr = PlayerList->begin();      //bypass dealer
@@ -502,10 +494,10 @@ void Game::hit(int currCardIndex, bool playerPass){
 
 void Game::dealInitialCards(){
   for (int i = 0; i < 2; ++i) {
-    dealer->addCardToHand(shoe->pop());
     for (auto iter = PlayerList->begin(); iter != nullptr; iter = iter->getNextNode()){
       iter->getVal().addCardToHand(shoe->pop());
     }
+    dealer->addCardToHand(shoe->pop());
   }
 }
 

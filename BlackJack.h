@@ -57,7 +57,6 @@ public:
     void deckPrint();             //this function prints the deck in the form of "ace of spades, 2 of spades,..."
     void shuffle();
     void addCard(Card card);
-    Card getTopCard();
     int size() { return this->Cards->size(); }
     Card pop();
     void join(Deck& other);
@@ -74,7 +73,6 @@ protected:
     string playerName;      //player name
     int cardsValue;         //total value of cards in hand
     int cashRemaining;      //amount of money the player has
-    int playerBet;
     Deck *Hand; //linked list of cards
 
 
@@ -131,7 +129,7 @@ protected:
 public:
     Game();                               //default constructor
     void loadGame();
-    void addPlayer(int num);
+    void addPlayers(int num);
     void printPlayer();
     void optionsMenu();
     void addMoney(string name, int num);

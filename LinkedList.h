@@ -25,7 +25,7 @@ public:
     Node* getPrevNode() { return this->prev; }
     T getNextVal() { return this->next->val; }
     T getPrevVal() { return this->prev->val; }
-    T getVal() { return this->val; }
+    T& getVal() { return this->val; }
     void setNextNode(Node* temp) { this->next = temp; }
     void setPrevNode(Node* temp) { this->prev = temp; }
     void setNextVal(T data) { this->next->val = data; }

@@ -325,19 +325,23 @@ void Game::optionsMenu() {
             if(playerStay == false) {
                 Node<Player> *curr = PlayerList->begin();
                 //for (auto curr = PlayerList->begin(); curr != nullptr; curr = curr->getNextNode()){
-                for (int i = 0; i <= playerTurn; i++) {
-//                    cout << "***************************************************" << endl;
-//                    cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
-//                         << endl;
-//                    cout << "***************************************************" << endl;
-                    if (i < PlayerList->size() - 1) {
-                        curr = curr->getNextNode();
-                    }
+                if(playerTurn == 0){
                     cout << "***************************************************" << endl;
                     cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
                          << endl;
                     cout << "***************************************************" << endl;
-                }//end for
+                }else {
+                    for (int i = 0; i <= playerTurn; i++) {
+                        if (i < PlayerList->size() - 1) {
+                            curr = curr->getNextNode();
+                        }
+                    }//end for
+                    cout << "***************************************************" << endl;
+                    cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
+                         << endl;
+                    cout << "***************************************************" << endl;
+
+                }
             }//end if
             if(playerStay == true){
                 cout << "***************************************************" << endl;

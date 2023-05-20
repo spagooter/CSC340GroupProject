@@ -309,7 +309,7 @@ void Game::optionsMenu() {
     bool playerStay = false;            //if player stays, dealers turn
     bool dealersTurn = false;
     int num;                            //input for options menu
-    int playerTurn = 1;
+    int playerTurn = 0;
     int currCardIndex = 0;              //keeps track of next card not yet dealt
     do{
         if(cardsDealt == false){        //bets must be placed before dealing cards
@@ -324,14 +324,19 @@ void Game::optionsMenu() {
         if(betsPlaced == true && cardsDealt == true){
             if(playerStay == false) {
                 Node<Player> *curr = PlayerList->begin();
-                for (int i = 0; i < playerTurn; i++) {
+                //for (auto curr = PlayerList->begin(); curr != nullptr; curr = curr->getNextNode()){
+                for (int i = 0; i <= playerTurn; i++) {
+//                    cout << "***************************************************" << endl;
+//                    cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
+//                         << endl;
+//                    cout << "***************************************************" << endl;
+                    if (i < PlayerList->size() - 1) {
+                        curr = curr->getNextNode();
+                    }
                     cout << "***************************************************" << endl;
                     cout << "Player: " << curr->getVal().getPlayerName() << "'s Turn. Please select (2)Hit or (3)Stay"
                          << endl;
                     cout << "***************************************************" << endl;
-                    if (i < PlayerList->size() - 1) {
-                        curr = curr->getNextNode();
-                    }
                 }//end for
             }//end if
             if(playerStay == true){
@@ -371,12 +376,15 @@ void Game::optionsMenu() {
                 break;
             case 3:
                 cout << "Stay" << endl;      //stay
+                cout << "playerTurn: " << playerTurn << endl;
+                    if(playerTurn == PlayerList->size()-1){
+                        playerStay = true;                      //all players stay
+                    }
+                    cout << "playerTurn after stay: " << playerTurn << " size: " << PlayerList->size() << " playerStay: " << playerStay << endl;
                     playerTurn = playerTurn + 1;
-                    if(playerTurn == PlayerList->size() && playerStay == true){
+                    if(playerTurn == PlayerList->size()-1 && playerStay == true){
                         dealersTurn = true;
                     }
-
-
                 if(dealersTurn = true){
                     //checkCardValues();
                 }
@@ -388,6 +396,7 @@ void Game::optionsMenu() {
                 cardsDealt = false;
                 playerStay = false;
                 betsPlaced = false;
+                playerTurn = 0;
                 break;
         }// end switch
     }while(endGame != true);
